@@ -1,0 +1,86 @@
+import os
+from pathlib import Path
+import environ
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env(os.path.join(Path(__file__).resolve().parent.parent, '.env'))
+
+# Build paths inside the project
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = env('SECRET_KEY', default='your-default-secret-key')
+
+DEBUG = env.bool('DEBUG', default=True)
+
+ALLOWED_HOSTS = []
+
+# Application definition
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'main_app',
+    'rest_framework',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Required for sessions
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Required for auth
+    'django.contrib.messages.middleware.MessageMiddleware',  # Required for messages
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'pagepilot_project.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'main_app', 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',  # Required for messages
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'pagepilot_project.wsgi.application'
+
+# Database configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Using SQLite for local development
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# Environment variables for Supabase and OpenAI
+SUPABASE_URL = env('SUPABASE_URL')
+SUPABASE_KEY = env('SUPABASE_KEY')
+OPENAI_API_KEY = env('OPENAI_API_KEY')
+SHOPIFY_API_KEY = env('SHOPIFY_API_KEY', default='')
+SHOPIFY_API_SECRET = env('SHOPIFY_API_SECRET', default='')
+
+# Password validation
+AUTH_PASSWORD_VALIDATORS = [
+    # (validators if needed)
+]
+
+# Internationalization
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+
+# Static files
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

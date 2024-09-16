@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Select Images for "{{ title }}"</h2>
+    <form method="post" action="{% url 'review_product' %}">
+        {% csrf_token %}
+        <input type="hidden" name="title" value="{{ title }}">
+        <input type="hidden" name="language" value="{{ language }}">
+        <div class="row" id="image-grid">
+            <!-- Images will be dynamically inserted here -->
+        </div>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+            <div class="modal-body">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Fetching images...</span>
+                </div>
+                <p class="mt-3">Fetching and loading images. Please wait...</p>
+                <p id="loading-progress">0 of 0 images fetched</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+.image-checkbox {
+    position: relative;
+    cursor: pointer;
+    display: block;
+}
+.image-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.image-checkbox .check-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #007bff;
+    display: none;
+    font-size: 1.5rem;
+}
+.image-checkbox input[type="checkbox"]:checked ~ .check-icon {
+    display: block;
+}
+.tooltip-custom {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 1000;
+    font-size: 12px;
+}
+</style>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const imageGrid = document.getElementById('image-grid');
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    const loadingProgress = document.getElementById('loading-progress');
+
+    // Function to fetch images via AJAX
+    function fetchImages() {
+        loadingModal.show();  // Show loading modal
+
+        fetch("{% url 'fetch_images' %}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    window.location.href = "{% url 'dashboard' %}";
+                    return;
+                }
+
+                // Update the title if it's still the placeholder
+                const titleElement = document.querySelector('h2');
+                titleElement.innerText = `Select Images for "${data.title}"`;
+
+                const images = data.images;
+                let fetchedCount = 0;
+
+                // Function to add images one by one with a delay
+                images.forEach((image, index) => {
+                    setTimeout(() => {
+                        // Create the image card
+                        const col = document.createElement('div');
+                        col.className = 'col-lg-2 col-md-3 col-sm-4 col-6 mb-4';
+
+                        const card = document.createElement('div');
+                        card.className = 'card image-container';
+
+                        const label = document.createElement('label');
+                        label.className = 'image-checkbox';
+
+                        const img = document.createElement('img');
+                        img.dataset.src = image.src;
+                        img.className = 'card-img-top img-fluid lazy-load';
+                        img.alt = 'Image';
+                        img.dataset.width = image.width;
+                        img.dataset.height = image.height;
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.name = 'selected_images';
+                        checkbox.value = image.src;
+
+                        const checkIcon = document.createElement('i');
+                        checkIcon.className = 'bi bi-check-circle-fill check-icon';
+
+                        label.appendChild(img);
+                        label.appendChild(checkbox);
+                        label.appendChild(checkIcon);
+                        card.appendChild(label);
+                        col.appendChild(card);
+                        imageGrid.appendChild(col);
+
+                        // Initialize lazy loading for the new image
+                        initializeLazyLoading(img);
+
+                        // Initialize hover effects for the new image
+                        initializeHoverEffects(img);
+
+                        // Update the progress
+                        fetchedCount++;
+                        loadingProgress.innerText = `${fetchedCount} of ${images.length} images fetched`;
+
+                        // Hide the loading modal when all images are fetched
+                        if (fetchedCount === images.length) {
+                            setTimeout(() => {
+                                loadingModal.hide();
+                            }, 500);  // Delay to ensure the last image is visible
+                        }
+                    }, index * 100); // Adjust the delay (in milliseconds) as needed
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching images:', error);
+                alert('An error occurred while fetching images.');
+                window.location.href = "{% url 'dashboard' %}";
+            });
+    }
+
+    // Function to initialize lazy loading for a single image
+    function initializeLazyLoading(lazyImage) {
+        if ('IntersectionObserver' in window) {
+            const lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        lazyImageObserver.unobserve(img);
+                    }
+                });
+            });
+            lazyImageObserver.observe(lazyImage);
+        } else {
+            // Fallback for older browsers
+            lazyImage.src = lazyImage.dataset.src;
+        }
+    }
+
+    // Function to initialize hover effects for a single image
+    function initializeHoverEffects(img) {
+        img.addEventListener('mouseover', function (event) {
+            const width = this.dataset.width;
+            const height = this.dataset.height;
+            const tooltip = document.createElement('div');
+            tooltip.classList.add('tooltip-custom');
+            tooltip.innerText = `Dimensions: ${width} x ${height} px`;
+            document.body.appendChild(tooltip);
+            tooltip.style.left = `${event.pageX + 10}px`;
+            tooltip.style.top = `${event.pageY + 10}px`;
+
+            const moveTooltip = (e) => {
+                tooltip.style.left = `${e.pageX + 10}px`;
+                tooltip.style.top = `${e.pageY + 10}px`;
+            };
+
+            const removeTooltip = () => {
+                tooltip.remove();
+                img.removeEventListener('mousemove', moveTooltip);
+                img.removeEventListener('mouseout', removeTooltip);
+            };
+
+            img.addEventListener('mousemove', moveTooltip);
+            img.addEventListener('mouseout', removeTooltip);
+        });
+    }
+
+    // Fetch images when the page loads
+    fetchImages();
+});
+</script>
+{% endblock %}

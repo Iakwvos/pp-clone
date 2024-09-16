@@ -1,0 +1,38 @@
+<!-- main_app/templates/main_page.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home - PagePilot Clone{% endblock %}
+
+{% block content %}
+<div class="row align-items-center my-5">
+    <div class="col-lg-6">
+        <h1 class="display-4">Automate Your Page Creation</h1>
+        <p class="lead">Generate high-converting landing pages effortlessly using AI-powered tools.</p>
+        <a href="{% url 'signup' %}" class="btn btn-primary btn-lg me-2">Get Started</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+    </div>
+    <div class="col-lg-6">
+        <img src="{% static 'images/hero-image.png' %}" alt="Hero Image" class="img-fluid">
+    </div>
+</div>
+
+<hr class="my-5">
+
+<div class="row text-center">
+    <div class="col-md-4 mb-4">
+        <i class="bi bi-lightbulb-fill display-4 text-primary"></i>
+        <h3 class="mt-3">Smart AI Generation</h3>
+        <p>Leverage the power of AI to create compelling content for your pages.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+        <i class="bi bi-shop-window-fill display-4 text-primary"></i>
+        <h3 class="mt-3">Seamless Shopify Integration</h3>
+        <p>Import your products directly to Shopify with just a few clicks.</p>
+    </div>
+    <div class="col-md-4 mb-4">
+        <i class="bi bi-speedometer2 display-4 text-primary"></i>
+        <h3 class="mt-3">Fast and Reliable</h3>
+        <p>Experience lightning-fast page generation and reliable performance.</p>
+    </div>
+</div>
+{% endblock %}

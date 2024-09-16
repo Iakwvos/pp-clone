@@ -1,0 +1,35 @@
+<!-- main_app/templates/settings.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Settings - PagePilot Clone{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-5">
+    <div class="col-md-8">
+        <h2>Profile Settings</h2>
+        <form method="post" action="{% url 'settings' %}">
+            {% csrf_token %}
+            
+            <!-- Full Name Field -->
+            <div class="mb-4">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" id="full_name" name="full_name" value="{{ full_name }}" class="form-control" placeholder="Enter your full name" required>
+            </div>
+            
+            <!-- Shop URL Field -->
+            <div class="mb-4">
+                <label for="shop_url" class="form-label">Shop URL</label>
+                <input type="url" id="shop_url" name="shop_url" value="{{ shop_url }}" class="form-control" placeholder="https://yourshop.myshopify.com" required>
+            </div>
+    
+            <!-- Shopify API Secret Field -->
+            <div class="mb-4">
+                <label for="shopify_api_secret" class="form-label">Shopify API Secret</label>
+                <input type="password" id="shopify_api_secret" name="shopify_api_secret" value="{{ shopify_api_secret }}" class="form-control" placeholder="Enter your Shopify API Secret" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Django",
+            "type": "python",
+            "request": "launch",
+            "module": "manage",
+            "args": [
+                "runserver",
+                "--noreload"
+            ],
+            "django": true
+        }
+    ]
+}

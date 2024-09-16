@@ -1,0 +1,110 @@
+<!-- generate_product_step3.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Shopify JSON Template</h2>
+    <form method="post" action="{% url 'save_product' %}">
+        {% csrf_token %}
+        
+        <!-- Hidden Fields for Original Data -->
+        <input type="hidden" name="title" value="{{ title }}">
+        <input type="hidden" name="language" value="{{ language }}">
+        {% for image in images %}
+            <input type="hidden" name="images[]" value="{{ image }}">
+        {% endfor %}
+        <!-- Hidden Inputs for Descriptions, Key Benefits, Reviews, Hooks, and Full Names -->
+        {% for description in descriptions %}
+            <input type="hidden" name="descriptions[]" value="{{ description }}">
+        {% endfor %}
+        {% for benefit in key_benefits %}
+            <input type="hidden" name="key_benefits[]" value="{{ benefit }}">
+        {% endfor %}
+        {% for review in reviews %}
+            <input type="hidden" name="reviews[]" value="{{ review }}">
+        {% endfor %}
+        {% for hook in hooks %}
+            <input type="hidden" name="hooks[]" value="{{ hook }}">
+        {% endfor %}
+        {% for name in full_names %}
+            <input type="hidden" name="full_names[]" value="{{ name }}">
+        {% endfor %}
+
+        <!-- JSON Editor Section -->
+        <div class="mb-4">
+            <h3>Shopify JSON Template:</h3>
+            <textarea id="json-editor" name="json_template" style="display: none;">{{ json_template }}</textarea>
+            <div id="json-editor-wrapper" style="border: 1px solid #ced4da; border-radius: .25rem;"></div>
+        </div>
+        <!-- Add this below the editor section for debugging -->
+        <div class="mb-4">
+            <h3>Debug: Shopify JSON Template Content</h3>
+            <pre>{{ json_template }}</pre>
+        </div>
+
+
+        <!-- Live Preview Section -->
+        <div class="mb-4">
+            <h3>Live Preview:</h3>
+            <pre id="json-preview" style="background-color: #f8f9fa; padding: 15px; border: 1px solid #ced4da; border-radius: .25rem; max-height: 500px; overflow: auto;"></pre>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Product</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<!-- Include CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" integrity="sha512-49qHeCF3ovSLZj9l0vLQ9LPgkOXgPwPqEd1Yua3hv+xwu3xZ7mEUrpf3uO1oa29aCr7NvPC+YLttXsjf6SEVog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/github.min.css" integrity="sha512-DuQFC4Sh1ATp+TdP1K+74NlDOj56QxqBwvQX7hpYEm8M9c3dzzrnTP+X3P7OeIG4jE6b84PjVXtP6zAhtAbdvg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js" integrity="sha512-QFJ+WVgeTFn6NjcfrCxAtKbujUrUtCn5gGhXvIn3/84g/8RjCjYMDkRlDR2I2zFjeU3s6V+nEkAAjAErf8wgwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js" integrity="sha512-HsDLqb6n4JQj2PWJFeAXjBrFw2iWeyLO9s5FqOXmkFt0Hg9jnn+6fhClru6SZmhZd8sPwNz/ojbj91DnkiBJHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    // Initialize CodeMirror
+    var editor = CodeMirror(document.getElementById('json-editor-wrapper'), {
+        value: document.getElementById('json-editor').value,
+        mode: { name: "javascript", json: true },
+        theme: "github",
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        indentUnit: 2,
+        tabSize: 2,
+        lineWrapping: true
+    });
+
+    // Function to update the hidden textarea with CodeMirror content
+    function updateTextarea() {
+        var jsonContent = editor.getValue();
+        document.getElementById('json-editor').value = jsonContent;
+    }
+
+    // Update the hidden textarea before form submission
+    var form = document.querySelector('form');
+    form.addEventListener('submit', function (e) {
+        updateTextarea();
+    });
+
+    // Function to update the live preview
+    function updatePreview() {
+        var jsonContent = editor.getValue();
+        var preview = document.getElementById('json-preview');
+        try {
+            var parsedJson = JSON.parse(jsonContent);
+            // Pretty-print the JSON for readability
+            preview.textContent = JSON.stringify(parsedJson, null, 4);
+        } catch (e) {
+            preview.textContent = "Invalid JSON: " + e.message;
+        }
+    }
+
+    // Initial preview update
+    updatePreview();
+
+    // Update preview on editor change
+    editor.on('change', function() {
+        updatePreview();
+    });
+</script>
+{% endblock %}
