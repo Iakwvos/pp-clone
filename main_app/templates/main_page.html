@@ -1,38 +1,285 @@
 <!-- main_app/templates/main_page.html -->
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Home - PagePilot Clone{% endblock %}
-
+{% block title %}Home - PagePilot.ai{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/main_page.css' %}">
+{% endblock %}
 {% block content %}
-<div class="row align-items-center my-5">
-    <div class="col-lg-6">
-        <h1 class="display-4">Automate Your Page Creation</h1>
-        <p class="lead">Generate high-converting landing pages effortlessly using AI-powered tools.</p>
-        <a href="{% url 'signup' %}" class="btn btn-primary btn-lg me-2">Get Started</a>
-        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+<!-- Hero Section -->
+<section class="hero-section text-white text-center d-flex align-items-center rounded-section" id="hero">
+    <div class="container position-relative">
+        <!-- Animated Background -->
+        <div id="particles-js"></div>
+        
+        <h1 class="display-4 fw-bold gradient-text">Create high-converting product pages<br>with just a few clicks</h1>
+        <p class="lead mt-4">Effortlessly generate optimized product pages using our AI-powered platform.</p>
+        <a href="{% url 'signup' %}" class="btn btn-lg btn-primary rounded-pill mt-3">Start Now for Free</a>
+        
+        <!-- Customer Ratings -->
+        <div class="customer-ratings mt-5">
+            <span class="rating-stars">
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-fill text-warning"></i>
+                <i class="bi bi-star-half text-warning"></i>
+            </span>
+            <span class="rating-text ms-2">4.8/5 Excellent (1,000+ reviews)</span>
+        </div>
     </div>
-    <div class="col-lg-6">
-        <img src="{% static 'images/hero-image.png' %}" alt="Hero Image" class="img-fluid">
-    </div>
-</div>
+</section>
 
-<hr class="my-5">
+<!-- Secondary Call-to-Action -->
+<section class="secondary-cta text-center py-5 rounded-section">
+    <div class="container">
+        <h2 class="fw-bold">Take the guesswork out of profitable dropshipping</h2>
+        <p class="lead mt-3">Let our AI optimize your product pages to boost conversions and increase sales.</p>
+    </div>
+</section>
 
-<div class="row text-center">
-    <div class="col-md-4 mb-4">
-        <i class="bi bi-lightbulb-fill display-4 text-primary"></i>
-        <h3 class="mt-3">Smart AI Generation</h3>
-        <p>Leverage the power of AI to create compelling content for your pages.</p>
+<!-- How It Works Section -->
+<section class="how-it-works-section py-5 rounded-section" id="how-it-works">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+                <div class="how-it-works-card p-4 text-center">
+                    <i class="bi bi-upload icon-lg mb-3"></i>
+                    <h3>Step 1: Upload Your Products</h3>
+                    <p>Simply upload your product details, and our AI will get to work.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="how-it-works-card p-4 text-center">
+                    <i class="bi bi-lightbulb-fill icon-lg mb-3"></i>
+                    <h3>Step 2: AI-Generated Content</h3>
+                    <p>Our AI generates compelling content tailored to your products.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="how-it-works-card p-4 text-center">
+                    <i class="bi bi-rocket-fill icon-lg mb-3"></i>
+                    <h3>Step 3: Publish & Optimize</h3>
+                    <p>Publish your high-converting pages with seamless Shopify integration.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4 mb-4">
-        <i class="bi bi-shop-window-fill display-4 text-primary"></i>
-        <h3 class="mt-3">Seamless Shopify Integration</h3>
-        <p>Import your products directly to Shopify with just a few clicks.</p>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 rounded-section" id="features">
+    <div class="container">
+        <h2 class="text-center mb-5">Features</h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+                <i class="bi bi-lightbulb-fill feature-icon"></i>
+                <h3>Smart AI Generation</h3>
+                <p>Leverage the power of AI to create compelling content for your pages.</p>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <i class="bi bi-cart-check feature-icon"></i>
+                <h3>Seamless Shopify Integration</h3>
+                <p>Import your products directly to Shopify with just a few clicks.</p>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <i class="bi bi-speedometer2 feature-icon"></i>
+                <h3>Fast and Reliable</h3>
+                <p>Experience lightning-fast page generation and reliable performance.</p>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="600">
+                <i class="bi bi-gear-fill feature-icon"></i>
+                <h3>Customizable Templates</h3>
+                <p>Choose from a variety of customizable templates to match your brand.</p>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="800">
+                <i class="bi bi-bar-chart-fill feature-icon"></i>
+                <h3>Analytics Dashboard</h3>
+                <p>Monitor your page performance with our comprehensive analytics tools.</p>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="1000">
+                <i class="bi bi-headset icon-lg mb-3 feature-icon"></i>
+                <h3>24/7 Support</h3>
+                <p>Get assistance anytime with our dedicated support team.</p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4 mb-4">
-        <i class="bi bi-speedometer2 display-4 text-primary"></i>
-        <h3 class="mt-3">Fast and Reliable</h3>
-        <p>Experience lightning-fast page generation and reliable performance.</p>
+</section>
+
+<!-- Performance Metrics Section -->
+<section class="performance-metrics py-5 rounded-section">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4" data-aos="fade-up">
+                <div class="metric-card p-4">
+                    <i class="bi bi-lightning-charge-fill icon-lg mb-3"></i>
+                    <h3 class="fw-bold">20x</h3>
+                    <p>Faster than a Copywriter</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="metric-card p-4">
+                    <i class="bi bi-clock-fill icon-lg mb-3"></i>
+                    <h3 class="fw-bold">+80</h3>
+                    <p>Hours Saved</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="metric-card p-4">
+                    <i class="bi bi-graph-up-arrow icon-lg mb-3"></i>
+                    <h3 class="fw-bold">3.5x</h3>
+                    <p>Faster than ChatGPT</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="metric-card p-4">
+                    <i class="bi bi-currency-dollar icon-lg mb-3"></i>
+                    <h3 class="fw-bold">$500+</h3>
+                    <p>Money Saved</p>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<!-- Client Trust Section -->
+<section class="client-trust-section py-5 rounded-section" id="client-trust">
+    <div class="container text-center">
+        <h5 class="mb-4">Trusted by over 5,000 businesses worldwide</h5>
+        <div id="clientCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static 'images/clients/shopify.png' %}" alt="Shopify" class="mx-3 client-logo">
+                    <img src="{% static 'images/clients/google.png' %}" alt="Google" class="mx-3 client-logo">
+                    <img src="{% static 'images/clients/stripe.png' %}" alt="Stripe" class="mx-3 client-logo">
+                    <img src="{% static 'images/clients/mailchimp.png' %}" alt="Mailchimp" class="mx-3 client-logo">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/clients/facebook.png' %}" alt="Facebook" class="mx-3 client-logo">
+                    <img src="{% static 'images/clients/twitter.png' %}" alt="Twitter" class="mx-3 client-logo">
+                    <img src="{% static 'images/clients/linkedin.png' %}" alt="LinkedIn" class="mx-3 client-logo">
+                    <img src="{% static 'images/clients/amazon.png' %}" alt="Amazon" class="mx-3 client-logo">
+                </div>
+                <!-- Add more carousel items if needed -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#clientCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-light rounded-circle p-2" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#clientCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-light rounded-circle p-2" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section (Replacing Live Activity Feed) -->
+<section class="testimonials-section py-5 rounded-section" id="testimonials">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Users Say</h2>
+        <div class="row">
+            <!-- Testimonial 1 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+                <div class="testimonial text-center p-4 bg-dark rounded">
+                    <img src="{% static 'images/user1.jpg' %}" alt="User 1" class="rounded-circle mb-3" width="80" height="80">
+                    <p>"PagePilot.ai has revolutionized the way I create landing pages. The AI-generated content is spot on and saves me so much time!"</p>
+                    <strong>— Jane Doe</strong>
+                </div>
+            </div>
+            <!-- Testimonial 2 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial text-center p-4 bg-dark rounded">
+                    <img src="{% static 'images/user2.jpg' %}" alt="User 2" class="rounded-circle mb-3" width="80" height="80">
+                    <p>"The seamless Shopify integration makes importing products a breeze. Highly recommend PagePilot.ai for any e-commerce business."</p>
+                    <strong>— John Smith</strong>
+                </div>
+            </div>
+            <!-- Testimonial 3 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="testimonial text-center p-4 bg-dark rounded">
+                    <img src="{% static 'images/user3.jpg' %}" alt="User 3" class="rounded-circle mb-3" width="80" height="80">
+                    <p>"The analytics dashboard provides valuable insights into my page performance. PagePilot.ai is an indispensable tool for my business."</p>
+                    <strong>— Emily Johnson</strong>
+                </div>
+            </div>
+            <!-- Add more testimonials as needed -->
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section class="pricing-section py-5 rounded-section" id="pricing">
+    <div class="container">
+        <h2 class="text-center mb-5">Choose Your Plan</h2>
+        <div class="row justify-content-center">
+            <!-- Starter Plan ($39) -->
+            <div class="col-md-4 mb-4" data-aos="fade-up">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Starter
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">$39<span class="period">/month</span></h5>
+                        <p class="card-text">Great for individuals starting out.</p>
+                        <ul class="list-unstyled mb-4">
+                            <li>Up to 20 Pages</li>
+                            <li>Basic Templates</li>
+                            <li>Email Support</li>
+                        </ul>
+                        <a href="{% url 'signup' %}" class="btn btn-primary rounded-pill">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Professional Plan ($59) -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card popular">
+                    <div class="card-header text-center">
+                        Professional
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">$59<span class="period">/month</span></h5>
+                        <p class="card-text">Ideal for growing businesses.</p>
+                        <ul class="list-unstyled mb-4">
+                            <li>Unlimited Pages</li>
+                            <li>Advanced Templates</li>
+                            <li>Priority Support</li>
+                            <li>Shopify Integration</li>
+                        </ul>
+                        <a href="{% url 'signup' %}" class="btn btn-primary rounded-pill">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Enterprise Plan ($79) -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="card">
+                    <div class="card-header text-center">
+                        Enterprise
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">$79<span class="period">/month</span></h5>
+                        <p class="card-text">For large organizations.</p>
+                        <ul class="list-unstyled mb-4">
+                            <li>All Features Included</li>
+                            <li>Dedicated Account Manager</li>
+                            <li>Custom Integrations</li>
+                            <li>24/7 Support</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary rounded-pill">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section text-center py-5 rounded-section">
+    <div class="container">
+        <h2 class="fw-bold">Ready to Transform Your Landing Pages?</h2>
+        <p class="lead mt-3">Join thousands of users who are creating stunning landing pages with ease.</p>
+        <a href="{% url 'signup' %}" class="btn btn-primary btn-lg rounded-pill mt-3">Get Started Now</a>
+    </div>
+</section>
 {% endblock %}

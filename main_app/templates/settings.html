@@ -1,35 +1,79 @@
-<!-- main_app/templates/settings.html -->
+<!-- templates/settings.html -->
 {% extends 'base.html' %}
-{% load static %}
-{% block title %}Settings - PagePilot Clone{% endblock %}
+
+{% block title %}Settings{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center my-5">
-    <div class="col-md-8">
-        <h2>Profile Settings</h2>
-        <form method="post" action="{% url 'settings' %}">
-            {% csrf_token %}
-            
-            <!-- Full Name Field -->
-            <div class="mb-4">
-                <label for="full_name" class="form-label">Full Name</label>
-                <input type="text" id="full_name" name="full_name" value="{{ full_name }}" class="form-control" placeholder="Enter your full name" required>
-            </div>
-            
-            <!-- Shop URL Field -->
-            <div class="mb-4">
-                <label for="shop_url" class="form-label">Shop URL</label>
-                <input type="url" id="shop_url" name="shop_url" value="{{ shop_url }}" class="form-control" placeholder="https://yourshop.myshopify.com" required>
-            </div>
-    
-            <!-- Shopify API Secret Field -->
-            <div class="mb-4">
-                <label for="shopify_api_secret" class="form-label">Shopify API Secret</label>
-                <input type="password" id="shopify_api_secret" name="shopify_api_secret" value="{{ shopify_api_secret }}" class="form-control" placeholder="Enter your Shopify API Secret" required>
-            </div>
-            
-            <button type="submit" class="btn btn-primary w-100">Save Changes</button>
-        </form>
+<div class="container mt-5">
+    <h2>Settings</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="full_name" class="form-label">Full Name:</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ full_name }}" placeholder="Enter your full name">
+        </div>
+        <div class="mb-3">
+            <label for="shop_url" class="form-label">Primary Shopify Store URL:</label>
+            <input type="url" class="form-control" id="shop_url" name="shop_url" value="{{ shop_url }}" placeholder="https://your-store.myshopify.com">
+        </div>
+        <div class="mb-3">
+            <label for="shopify_api_key" class="form-label">Shopify API Key:</label>
+            <input type="text" class="form-control" id="shopify_api_key" name="shopify_api_key" value="{{ shopify_api_key }}" placeholder="Your Shopify API Key">
+        </div>
+        <div class="mb-3">
+            <label for="shopify_api_secret" class="form-label">Shopify API Secret:</label>
+            <input type="text" class="form-control" id="shopify_api_secret" name="shopify_api_secret" value="{{ shopify_api_secret }}" placeholder="Your Shopify API Secret">
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save me-2"></i> Save Changes
+        </button>
+    </form>
+
+    <hr>
+
+    <!-- Connected Stores Section -->
+    <div class="connected-stores mt-4">
+        <h4>Connected Stores</h4>
+        {% if stores %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Store URL</th>
+                        <th scope="col">API Key</th>
+                        <th scope="col">API Secret</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for store in stores %}
+                        <tr>
+                            <td>{{ store.store_url }}</td>
+                            <td>{{ store.api_key }}</td>
+                            <td>{{ store.api_secret }}</td>
+                            <td>
+                                <form method="POST" action="{% url 'remove_store' store.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to remove this store?');">
+                                        <i class="bi bi-trash3"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No stores connected yet.</p>
+        {% endif %}
+
+        <!-- Add Store Button -->
+        {% if stores_left > 0 %}
+            <a href="{% url 'add_store' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i> Connect a New Store
+            </a>
+        {% else %}
+            <p>You have reached your store connection limit. Upgrade your subscription to connect more stores.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

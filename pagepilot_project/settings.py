@@ -13,7 +13,7 @@ SECRET_KEY = env('SECRET_KEY', default='your-default-secret-key')
 
 DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app', 'localhost']
 
 # Application definition
 INSTALLED_APPS = [
@@ -35,6 +35,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # Required for auth
     'django.contrib.messages.middleware.MessageMiddleware',  # Required for messages
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'pagepilot_project.urls'
@@ -84,3 +85,4 @@ TIME_ZONE = 'UTC'
 # Static files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

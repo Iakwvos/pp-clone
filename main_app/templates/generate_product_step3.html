@@ -1,110 +1,207 @@
-<!-- generate_product_step3.html -->
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="container mt-5">
-    <h2>Edit Shopify JSON Template</h2>
-    <form method="post" action="{% url 'save_product' %}">
-        {% csrf_token %}
-        
-        <!-- Hidden Fields for Original Data -->
-        <input type="hidden" name="title" value="{{ title }}">
-        <input type="hidden" name="language" value="{{ language }}">
-        {% for image in images %}
-            <input type="hidden" name="images[]" value="{{ image }}">
-        {% endfor %}
-        <!-- Hidden Inputs for Descriptions, Key Benefits, Reviews, Hooks, and Full Names -->
-        {% for description in descriptions %}
-            <input type="hidden" name="descriptions[]" value="{{ description }}">
-        {% endfor %}
-        {% for benefit in key_benefits %}
-            <input type="hidden" name="key_benefits[]" value="{{ benefit }}">
-        {% endfor %}
-        {% for review in reviews %}
-            <input type="hidden" name="reviews[]" value="{{ review }}">
-        {% endfor %}
-        {% for hook in hooks %}
-            <input type="hidden" name="hooks[]" value="{{ hook }}">
-        {% endfor %}
-        {% for name in full_names %}
-            <input type="hidden" name="full_names[]" value="{{ name }}">
-        {% endfor %}
-
-        <!-- JSON Editor Section -->
-        <div class="mb-4">
-            <h3>Shopify JSON Template:</h3>
-            <textarea id="json-editor" name="json_template" style="display: none;">{{ json_template }}</textarea>
-            <div id="json-editor-wrapper" style="border: 1px solid #ced4da; border-radius: .25rem;"></div>
-        </div>
-        <!-- Add this below the editor section for debugging -->
-        <div class="mb-4">
-            <h3>Debug: Shopify JSON Template Content</h3>
-            <pre>{{ json_template }}</pre>
+<!-- main_app/templates/generate_product_step3.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review and Customize Your Product</title>
+    <link rel="stylesheet" href="{% static 'css/generate_product_step3.css' %}">
+</head>
+<body>
+    <div class="main-content">
+        <div class="greeting-banner">
+            <h3>Review and Customize Your Product</h3>
+            <p>Edit the AI-generated content to ensure everything looks perfect before saving.</p>
         </div>
 
+        <form method="post" action="{% url 'save_product' %}">
+            {% csrf_token %}
 
-        <!-- Live Preview Section -->
-        <div class="mb-4">
-            <h3>Live Preview:</h3>
-            <pre id="json-preview" style="background-color: #f8f9fa; padding: 15px; border: 1px solid #ced4da; border-radius: .25rem; max-height: 500px; overflow: auto;"></pre>
-        </div>
+            <!-- Hidden Fields for Original Data -->
+            <input type="hidden" name="language" value="{{ language }}">
+            {% for image in images %}
+                <input type="hidden" name="image_urls" value="{{ image }}">
+            {% endfor %}
+            {% for handle in image_handles %}
+                <input type="hidden" name="image_handles" value="{{ handle }}">
+            {% endfor %}
+            {% for full_name in full_names %}
+                <input type="hidden" name="full_names" value="{{ full_name }}">
+            {% endfor %}
 
-        <button type="submit" class="btn btn-success">Save Product</button>
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
-    </form>
-</div>
+            <!-- Images Preview Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Selected Images</h5>
+                </div>
+                <div class="card-body images-section">
+                    {% for image in images %}
+                        <div class="image-container">
+                            <img src="{{ image }}" alt="Product Image {{ forloop.counter }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
 
-<!-- Include CodeMirror CSS and JS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" integrity="sha512-49qHeCF3ovSLZj9l0vLQ9LPgkOXgPwPqEd1Yua3hv+xwu3xZ7mEUrpf3uO1oa29aCr7NvPC+YLttXsjf6SEVog==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/github.min.css" integrity="sha512-DuQFC4Sh1ATp+TdP1K+74NlDOj56QxqBwvQX7hpYEm8M9c3dzzrnTP+X3P7OeIG4jE6b84PjVXtP6zAhtAbdvg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js" integrity="sha512-QFJ+WVgeTFn6NjcfrCxAtKbujUrUtCn5gGhXvIn3/84g/8RjCjYMDkRlDR2I2zFjeU3s6V+nEkAAjAErf8wgwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js" integrity="sha512-HsDLqb6n4JQj2PWJFeAXjBrFw2iWeyLO9s5FqOXmkFt0Hg9jnn+6fhClru6SZmhZd8sPwNz/ojbj91DnkiBJHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <!-- Product Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Product Information</h5>
+                </div>
+                <div class="card-body product-info">
+                    <div class="form-section">
+                        <!-- Product Title -->
+                        <div class="form-group">
+                            <label for="title" class="form-label">Product Title</label>
+                            <input type="text" id="title" name="title" class="form-control" value="{{ title }}" required>
+                        </div>
 
-<script>
-    // Initialize CodeMirror
-    var editor = CodeMirror(document.getElementById('json-editor-wrapper'), {
-        value: document.getElementById('json-editor').value,
-        mode: { name: "javascript", json: true },
-        theme: "github",
-        lineNumbers: true,
-        autoCloseBrackets: true,
-        matchBrackets: true,
-        indentUnit: 2,
-        tabSize: 2,
-        lineWrapping: true
-    });
+                        <!-- Full Names -->
+                        <div class="form-group">
+                            <label class="form-label">Full Names</label>
+                            {% for full_name in full_names %}
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text">{{ forloop.counter }}.</span>
+                                    <input type="text" name="full_names[]" class="form-control" value="{{ full_name }}" required>
+                                </div>
+                            {% endfor %}
+                        </div>
 
-    // Function to update the hidden textarea with CodeMirror content
-    function updateTextarea() {
-        var jsonContent = editor.getValue();
-        document.getElementById('json-editor').value = jsonContent;
-    }
+                        <!-- Key Benefits -->
+                        <div class="form-group">
+                            <label class="form-label">Key Benefits</label>
+                            {% for benefit in key_benefits %}
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text">{{ forloop.counter }}.</span>
+                                    <input type="text" name="key_benefits[]" class="form-control" value="{{ benefit }}" required>
+                                </div>
+                            {% endfor %}
+                        </div>
 
-    // Update the hidden textarea before form submission
-    var form = document.querySelector('form');
-    form.addEventListener('submit', function (e) {
-        updateTextarea();
-    });
+                        <!-- Descriptions -->
+                        <div class="form-group">
+                            <label class="form-label">Descriptions</label>
+                            {% for description in descriptions %}
+                                <div class="mb-2">
+                                    <textarea name="descriptions[]" class="form-control" rows="3" required>{{ description }}</textarea>
+                                </div>
+                            {% endfor %}
+                        </div>
 
-    // Function to update the live preview
-    function updatePreview() {
-        var jsonContent = editor.getValue();
-        var preview = document.getElementById('json-preview');
-        try {
-            var parsedJson = JSON.parse(jsonContent);
-            // Pretty-print the JSON for readability
-            preview.textContent = JSON.stringify(parsedJson, null, 4);
-        } catch (e) {
-            preview.textContent = "Invalid JSON: " + e.message;
+                        <!-- Full Names -->
+                        <div class="form-group">
+                            <label class="form-label">Full Names</label>
+                            {% for full_name in full_names %}
+                                <div class="mb-2">
+                                    <textarea name="full_names[]" class="form-control" rows="3" required>{{ full_name }}</textarea>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Marketing Hooks -->
+                        <div class="form-group">
+                            <label class="form-label">Marketing Hooks</label>
+                            {% for hook in hooks %}
+                                <div class="mb-2">
+                                    <textarea name="hooks[]" class="form-control" rows="2" required>{{ hook }}</textarea>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Customer Reviews -->
+                        <div class="form-group">
+                            <label class="form-label">Customer Reviews</label>
+                            {% for review in reviews %}
+                                <div class="mb-2">
+                                    <textarea name="reviews[]" class="form-control" rows="3" required>{{ review }}</textarea>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-center action-buttons">
+                <button type="submit" class="btn btn-primary me-3">Save Product</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Function to generate the product_data JSON from form inputs
+        function generateProductData() {
+            const title = document.getElementById('title').value.trim();
+    
+            // Gather Descriptions
+            const descriptions = [];
+            document.querySelectorAll('textarea[name="descriptions[]"]').forEach(textarea => {
+                descriptions.push(textarea.value.trim());
+            });
+
+            // Gather Descriptions
+            const full_names = [];
+            document.querySelectorAll('textarea[name="full_names[]"]').forEach(textarea => {
+                full_names.push(textarea.value.trim());
+            });
+    
+            // Gather Key Benefits
+            const keyBenefits = [];
+            document.querySelectorAll('input[name="key_benefits[]"]').forEach(input => {
+                keyBenefits.push(input.value.trim());
+            });
+    
+            // Gather Hooks
+            const hooks = [];
+            document.querySelectorAll('textarea[name="hooks[]"]').forEach(textarea => {
+                hooks.push(textarea.value.trim());
+            });
+    
+            // Gather Reviews
+            const reviews = [];
+            document.querySelectorAll('textarea[name="reviews[]"]').forEach(textarea => {
+                reviews.push(textarea.value.trim());
+            });
+    
+            const productData = {
+                title: title,
+                full_names: full_names,
+                descriptions: descriptions,
+                key_benefits: keyBenefits,
+                hooks: hooks,
+                reviews: reviews
+            };
+    
+            return productData;
         }
-    }
 
-    // Initial preview update
-    updatePreview();
-
-    // Update preview on editor change
-    editor.on('change', function() {
-        updatePreview();
-    });
-</script>
-{% endblock %}
+    
+        // Initialize preview on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePreview();
+    
+            // Add event listeners to all input and textarea fields
+            document.querySelectorAll('input, textarea').forEach(element => {
+                element.addEventListener('input', updatePreview);
+            });
+        });
+    
+        // Handle form submission to include product_data as JSON
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Generate product_data and set it to a hidden input
+            const productData = generateProductData();
+            let productDataInput = document.querySelector('input[name="product_data"]');
+            if (!productDataInput) {
+                productDataInput = document.createElement('input');
+                productDataInput.type = 'hidden';
+                productDataInput.name = 'product_data';
+                this.appendChild(productDataInput);
+            }
+            productDataInput.value = JSON.stringify(productData);
+        });
+    </script>
+</body>
+</html>

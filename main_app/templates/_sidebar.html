@@ -1,0 +1,77 @@
+<!-- main_app/templates/_sidebar.html -->
+{% load static %}
+<div class="sidebar d-flex flex-column justify-content-between">
+    <div>
+        <div class="sidebar-header mb-4">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'dashboard' %}">
+                <img src="{% static 'images/logo.png' %}" alt="PagePilot.ai Logo" width="30" height="30">
+                <span class="ms-2">PagePilot.ai</span>
+            </a>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'knowledge_base' %}active{% endif %}">
+                    <i class="bi bi-book me-2"></i> Knowledge Base
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'integrations' %}active{% endif %}">
+                    <i class="bi bi-puzzle me-2"></i> Integrations
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'ad_creatives' %}active{% endif %}">
+                    <i class="bi bi-lightbulb me-2"></i> Ad Creatives
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'research' %}active{% endif %}">
+                    <i class="bi bi-search me-2"></i> Research
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'partners' %}active{% endif %}">
+                    <i class="bi bi-people me-2"></i> Partners
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'upgrade_plan' %}" class="nav-link {% if request.resolver_match.url_name == 'upgrade_plan' %}active{% endif %}">
+                    <i class="bi bi-credit-card me-2"></i> Plans & Billing
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                    <i class="bi bi-gear me-2"></i> Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'logout' %}" class="nav-link">
+                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Subscription Level Card -->
+    <div class="subscription-card mt-4">
+        <div class="plan-header">
+            <h5>Your Plan</h5>
+            <a href="{% url 'upgrade_plan' %}" class="plan-name">{{ plan }}</a>
+        </div>
+        <div class="plan-details">
+            {% if plan != 'Professional' %}
+                <p>Unlock more features with the <strong>Professional</strong> plan!</p>
+                <a href="{% url 'upgrade_plan' %}" class="btn btn-primary upgrade-btn">
+                    <i class="bi bi-arrow-up-circle me-2"></i>Upgrade Now
+                </a>
+            {% else %}
+                <p>Thank you for being a valued <strong>Professional</strong> member!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>

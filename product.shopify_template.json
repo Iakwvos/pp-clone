@@ -1,0 +1,395 @@
+{
+    "sections": {
+      "main": {
+        "type": "main-product",
+        "blocks": {
+          "1b299bab-be7b-4589-8563-b6efa5d7c8ff": {
+            "type": "custom_liquid",
+            "settings": {
+              "custom_liquid": "{% assign rating = \n\n5 \n\n%}\n\n{% assign text = \"\n\n338 reviews \n\n\" %}\n\n{% assign centeredMobile =\n\nfalse \n\n%}\n\n<div class=\"pagepilot-reviewsNumber\">\n        <div class=\"stars\">\n            {% for i in (1..rating) %}\n            <span class=\"star\"></span>\n            {% endfor %}              \n        </div>\n\n        <div class=\"text\">\n            {{ text }}\n        </div>\n</div>\n\n<style>\n    .pagepilot-reviewsNumber {\n        display: flex;\n        gap: 10px;\n        align-items: center;\n        margin-bottom: -10px;\n        margin-top: 10px;       \n    }\n    .pagepilot-reviewsNumber .stars {\n        display: flex;\n        gap: 2px;\n    }    \n    .pagepilot-reviewsNumber .stars .star {\n        width: 13px;\n        height: 13px;\n        display: block;\n        background-image: url(\"data:image/svg+xml,%3Csvg version='1.0' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='800px' height='800px' viewBox='0 0 64 64' enable-background='new 0 0 64 64' xml:space='preserve'%3E%3Cpath fill='%23fbbc02' d='M62.799,23.737c-0.47-1.399-1.681-2.419-3.139-2.642l-16.969-2.593L35.069,2.265 C34.419,0.881,33.03,0,31.504,0c-1.527,0-2.915,0.881-3.565,2.265l-7.623,16.238L3.347,21.096c-1.458,0.223-2.669,1.242-3.138,2.642 c-0.469,1.4-0.115,2.942,0.916,4l12.392,12.707l-2.935,17.977c-0.242,1.488,0.389,2.984,1.62,3.854 c1.23,0.87,2.854,0.958,4.177,0.228l15.126-8.365l15.126,8.365c0.597,0.33,1.254,0.492,1.908,0.492c0.796,0,1.592-0.242,2.269-0.72 c1.231-0.869,1.861-2.365,1.619-3.854l-2.935-17.977l12.393-12.707C62.914,26.68,63.268,25.138,62.799,23.737z'/%3E%3C/svg%3E\");\n        background-size: cover;\n        background-repeat: no-repeat;\n    }    \n    {% if centeredMobile %}\n    @media only screen and (max-width: 769px) {\n        .pagepilot-reviewsNumber {\n            justify-content: center;\n        }\n    }\n    {% endif %}\n</style>"
+            }
+          },
+          "title": {
+            "type": "title",
+            "settings": {}
+          },
+          "d9dd680a-ad3b-4936-ba9e-2c8d2195e9bc": {
+            "type": "custom_liquid",
+            "settings": {
+              "custom_liquid": "<strong>{data['descriptions'][0]}</strong>"
+            }
+          },
+          "price": {
+            "type": "price",
+            "settings": {}
+          },
+          "c41cf637-e91f-43b8-8f26-65970b921237": {
+            "type": "custom_liquid",
+            "settings": {
+              "custom_liquid": "{% assign centeredMobile =\n\nfalse\n    \n%}\n\n<div class=\"pagepilot-benefits\">\n    <ul>\n        <li>{data['key benefits'][0]}</li>\n        <li>{data['key benefits'][1]}</li>\n        <li>{data['key benefits'][2]}</li>\n        <li> </li>\n    </ul>\n</div>\n\n\n<style>\n.pagepilot-benefits {\n    border-top: 1px solid #ececec;\n    padding-top: 22px;\n}\n.pagepilot-benefits ul {\n    text-align: left;\n    list-style: none;\n    margin: 0;\n    text-align: left;\n    padding: 0;\n}\n.pagepilot-benefits ul li {\n    margin-bottom: 7px;\n}\n\n{% if centeredMobile %}\n@media only screen and (max-width: 769px) {\n    .pagepilot-benefits ul {\n        text-align: center;\n    }\n}\n{% endif %}\n</style>"
+            }
+          },
+          "variant_picker": {
+            "type": "variant_picker",
+            "settings": {
+              "picker_type": "button"
+            }
+          },
+          "quantity_selector": {
+            "type": "quantity_selector",
+            "settings": {}
+          },
+          "buy_buttons": {
+            "type": "buy_buttons",
+            "settings": {
+              "show_dynamic_checkout": true
+            }
+          },
+          "40b4192f-6795-4553-af36-29a4c0fce1c6": {
+            "type": "custom_liquid",
+            "settings": {
+              "custom_liquid": "<div class=\"pagepilot-features\">\n    <div class=\"feature\" style=\"font-size: 16px; line-height:normal;\">\n        <span class=\"icon truck\"></span>\n        Free tracked & insured shipping \n    </div>\n\n    <div class=\"feature\" style=\"font-size: 16px; line-height:normal;\">\n        <span class=\"icon return\"></span>\n        Free Returns\n    </div>\n\n    <div class=\"feature\" style=\"font-size: 16px; line-height:normal;\">\n        <span class=\"icon guarantee\"></span>\n        30 Days Money Back Guarantee\n    </div>        \n</div>\n\n<style>\n    .pagepilot-features {\n        display: flex;\n        justify-content: space-between;\n        margin-top: 10px;  \n        border-bottom: 1px solid #ececec;\n        padding-bottom: 20px;      \n        margin-bottom: 20px;\n    }\n    .pagepilot-features .feature {\n        display: flex;\n        flex-direction: column;\n        text-align: center;\n        flex: 1;\n        font-size: 1rem;\n    }\n    .pagepilot-features .feature .icon {\n        width: 28px;\n        height: 28px;\n        display: block;\n        margin: 0 auto 7px auto;\n        background-size: cover;\n        background-repeat: no-repeat;\n    }\n    .pagepilot-features .feature .icon.truck {\n        background-image: url(\"data:image/svg+xml,%3Csvg fill='%23000000' height='800px' width='800px' version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 462.522 462.522' xml:space='preserve'%3E%3Cpath d='M432.958,222.262c-1.452-0.305-2.823-0.592-4.042-0.909c-13.821-3.594-20.129-5.564-24.793-14.569l-17.667-35.768 c-5.678-10.961-20.339-19.879-32.682-19.879h-31.453v-41.303c0-7.416-6.034-13.45-13.452-13.45l-219.07,0.22 c-7.218,0-12.661,5.736-12.661,13.343v12.208H21.018C9.429,122.156,0,131.584,0,143.174s9.429,21.018,21.018,21.018h56.119v20.145 H40.394c-11.589,0-21.018,9.429-21.018,21.018s9.429,21.018,21.018,21.018h36.743v20.145H59.77 c-11.589,0-21.018,9.429-21.018,21.018s9.429,21.018,21.018,21.018h17.367v21.07c0,7.416,6.034,13.45,13.45,13.45h22.788 c3.549,24.323,24.542,43.064,49.837,43.064c25.297,0,46.291-18.741,49.841-43.064h92.224c0.479,0,0.97-0.032,1.46-0.064 c3.522,24.354,24.528,43.128,49.845,43.128c25.297,0,46.291-18.741,49.841-43.064h32.732c12.885,0,23.368-10.482,23.368-23.366 v-39.648C462.522,228.465,444.73,224.732,432.958,222.262z M356.582,297.46c10.1,0,18.317,8.214,18.317,18.311 s-8.217,18.311-18.317,18.311c-10.096,0-18.31-8.214-18.31-18.311S346.486,297.46,356.582,297.46z M322.321,219.414v-48.77h24.036 c9.238,0,20.634,6.932,24.864,15.094l15.721,31.829c0.333,0.644,0.679,1.258,1.038,1.846H322.321z M181.529,315.77 c0,10.096-8.217,18.311-18.317,18.311c-10.096,0-18.309-8.214-18.309-18.311s8.213-18.311,18.309-18.311 C173.312,297.46,181.529,305.674,181.529,315.77z'/%3E%3C/svg%3E\");\n    }\n    .pagepilot-features .feature .icon.return {\n        background-image: url(\"data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20.5 7.27783L12 12.0001M12 12.0001L3.49997 7.27783M12 12.0001L12 21.5001M14 20.889L12.777 21.5684C12.4934 21.726 12.3516 21.8047 12.2015 21.8356C12.0685 21.863 11.9315 21.863 11.7986 21.8356C11.6484 21.8047 11.5066 21.726 11.223 21.5684L3.82297 17.4573C3.52346 17.2909 3.37368 17.2077 3.26463 17.0893C3.16816 16.9847 3.09515 16.8606 3.05048 16.7254C3 16.5726 3 16.4013 3 16.0586V7.94153C3 7.59889 3 7.42757 3.05048 7.27477C3.09515 7.13959 3.16816 7.01551 3.26463 6.91082C3.37368 6.79248 3.52345 6.70928 3.82297 6.54288L11.223 2.43177C11.5066 2.27421 11.6484 2.19543 11.7986 2.16454C11.9315 2.13721 12.0685 2.13721 12.2015 2.16454C12.3516 2.19543 12.4934 2.27421 12.777 2.43177L20.177 6.54288C20.4766 6.70928 20.6263 6.79248 20.7354 6.91082C20.8318 7.01551 20.9049 7.13959 20.9495 7.27477C21 7.42757 21 7.59889 21 7.94153L21 12.5001M7.5 4.50008L16.5 9.50008M16 18.0001L18 20.0001L22 16.0001' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");\n    }\n    .pagepilot-features .feature .icon.guarantee {\n        background-image: url(\"data:image/svg+xml,%3Csvg fill='%23000000' width='800px' height='800px' viewBox='0 0 52 52' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M26,2c3,0,5.43,3.29,8.09,4.42s6.82.51,8.84,2.65,1.51,6.07,2.65,8.84S50,23,50,26s-3.29,5.43-4.42,8.09-.51,6.82-2.65,8.84-6.07,1.53-8.84,2.65S29,50,26,50s-5.43-3.29-8.09-4.42-6.82-.51-8.84-2.65-1.53-6.07-2.65-8.84S2,29,2,26s3.29-5.43,4.42-8.09.51-6.82,2.65-8.84,6.07-1.53,8.84-2.65S23,2,26,2Zm0,7.58A16.42,16.42,0,1,0,42.42,26h0A16.47,16.47,0,0,0,26,9.58Zm7.62,9.15,1.61,1.52a1.25,1.25,0,0,1,0,1.51L25.08,33.07a2.07,2.07,0,0,1-1.61.7,2.23,2.23,0,0,1-1.61-.7L16.37,27.6a1,1,0,0,1-.1-1.42l.1-.11L18,24.56a1.1,1.1,0,0,1,1.54-.07l.07.07,3.89,4,8.59-9.8A1.1,1.1,0,0,1,33.62,18.73Z'/%3E%3C/svg%3E\");\n    }    \n\n    @media only screen and (max-width: 290px) {\n        .pagepilot-features {\n            flex-direction: column;\n            gap: 18px;\n        }\n    }    \n</style>"
+            }
+          },
+          "18410b14-bf5d-48f4-a499-d7c5a2402eef": {
+            "type": "custom_liquid",
+            "settings": {
+              "custom_liquid": "{% assign review = \"\n\n{data['reviews'][0]}\n\n\" %}\n\n{% assign author = \"\n\n{data['full names'][0]}\n\n\" %}\n\n{% assign image = \"\n\n\n\" %}\n\n{% assign rating =\n\n5 \n\n%}\n\n    \n<div class=\"pagepilot-featuredReview\">\n   \n\n    <div class=\"content\">\n        <div class=\"stars\">\n\n            {% for i in (1..rating) %}\n            <span class=\"star\"></span>\n            {% endfor %}                \n            \n        </div>\n\n        <div class=\"review\" style=\"font-size: 16px; line-height:normal;\">\n            \"{{ review }}\"\n        </div>\n\n        <div class=\"author\">\n            <span class=\"verified\"></span>\n            {{ author }}\n        </div>\n    </div>\n</div>\n\n<style>\n    .pagepilot-featuredReview {\n        display: flex;\n        align-items: center;\n        gap: 20px;\n    }\n\n    .pagepilot-featuredReview .reviewImg {\n        width: 75px;\n        height: 75px;\n        border-radius: 50%;\n        -webkit-border-radius: 50%;\n        -moz-border-radius: 50%;\n    }\n\n    .pagepilot-featuredReview .content {\n        display: flex;\n        flex-direction: column;\n        gap: 8px;\n    }\n\n    .pagepilot-featuredReview .content .stars {\n        display: flex;\n        gap: 2px;\n    }    \n\n    .pagepilot-featuredReview .content .star {\n        width: 13px;\n        height: 13px;\n        display: block;\n        background-image: url(\"data:image/svg+xml,%3Csvg version='1.0' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='800px' height='800px' viewBox='0 0 64 64' enable-background='new 0 0 64 64' xml:space='preserve'%3E%3Cpath fill='%23fbbc02' d='M62.799,23.737c-0.47-1.399-1.681-2.419-3.139-2.642l-16.969-2.593L35.069,2.265 C34.419,0.881,33.03,0,31.504,0c-1.527,0-2.915,0.881-3.565,2.265l-7.623,16.238L3.347,21.096c-1.458,0.223-2.669,1.242-3.138,2.642 c-0.469,1.4-0.115,2.942,0.916,4l12.392,12.707l-2.935,17.977c-0.242,1.488,0.389,2.984,1.62,3.854 c1.23,0.87,2.854,0.958,4.177,0.228l15.126-8.365l15.126,8.365c0.597,0.33,1.254,0.492,1.908,0.492c0.796,0,1.592-0.242,2.269-0.72 c1.231-0.869,1.861-2.365,1.619-3.854l-2.935-17.977l12.393-12.707C62.914,26.68,63.268,25.138,62.799,23.737z'/%3E%3C/svg%3E\");\n        background-size: cover;\n        background-repeat: no-repeat;\n    }\n    \n    .pagepilot-featuredReview .content .review {\n        font-size: .9rem;\n        letter-spacing: 0;\n        line-height: 18px;\n        text-align: left;\n    }       \n\n    .pagepilot-featuredReview .content .author {\n        display: flex;\n        gap: 5px;\n        align-items: center;\n        font-size: 1rem;\n        font-weight: 600;\n        font-style: italic;\n    }\n\n    .pagepilot-featuredReview .content .author .verified {\n        width: 16px;\n        height: 16px;\n        display: block;\n        background-image: url(\"data:image/svg+xml,%3Csvg width='800px' height='800px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.5924 3.20027C9.34888 3.4078 9.22711 3.51158 9.09706 3.59874C8.79896 3.79854 8.46417 3.93721 8.1121 4.00672C7.95851 4.03705 7.79903 4.04977 7.48008 4.07522C6.6787 4.13918 6.278 4.17115 5.94371 4.28923C5.17051 4.56233 4.56233 5.17051 4.28923 5.94371C4.17115 6.278 4.13918 6.6787 4.07522 7.48008C4.04977 7.79903 4.03705 7.95851 4.00672 8.1121C3.93721 8.46417 3.79854 8.79896 3.59874 9.09706C3.51158 9.22711 3.40781 9.34887 3.20027 9.5924C2.67883 10.2043 2.4181 10.5102 2.26522 10.8301C1.91159 11.57 1.91159 12.43 2.26522 13.1699C2.41811 13.4898 2.67883 13.7957 3.20027 14.4076C3.40778 14.6511 3.51158 14.7729 3.59874 14.9029C3.79854 15.201 3.93721 15.5358 4.00672 15.8879C4.03705 16.0415 4.04977 16.201 4.07522 16.5199C4.13918 17.3213 4.17115 17.722 4.28923 18.0563C4.56233 18.8295 5.17051 19.4377 5.94371 19.7108C6.278 19.8288 6.6787 19.8608 7.48008 19.9248C7.79903 19.9502 7.95851 19.963 8.1121 19.9933C8.46417 20.0628 8.79896 20.2015 9.09706 20.4013C9.22711 20.4884 9.34887 20.5922 9.5924 20.7997C10.2043 21.3212 10.5102 21.5819 10.8301 21.7348C11.57 22.0884 12.43 22.0884 13.1699 21.7348C13.4898 21.5819 13.7957 21.3212 14.4076 20.7997C14.6511 20.5922 14.7729 20.4884 14.9029 20.4013C15.201 20.2015 15.5358 20.0628 15.8879 19.9933C16.0415 19.963 16.201 19.9502 16.5199 19.9248C17.3213 19.8608 17.722 19.8288 18.0563 19.7108C18.8295 19.4377 19.4377 18.8295 19.7108 18.0563C19.8288 17.722 19.8608 17.3213 19.9248 16.5199C19.9502 16.201 19.963 16.0415 19.9933 15.8879C20.0628 15.5358 20.2015 15.201 20.4013 14.9029C20.4884 14.7729 20.5922 14.6511 20.7997 14.4076C21.3212 13.7957 21.5819 13.4898 21.7348 13.1699C22.0884 12.43 22.0884 11.57 21.7348 10.8301C21.5819 10.5102 21.3212 10.2043 20.7997 9.5924C20.5922 9.34887 20.4884 9.22711 20.4013 9.09706C20.2015 8.79896 20.0628 8.46417 19.9933 8.1121C19.963 7.95851 19.9502 7.79903 19.9248 7.48008C19.8608 6.6787 19.8288 6.278 19.7108 5.94371C19.4377 5.17051 18.8295 4.56233 18.0563 4.28923C17.722 4.17115 17.3213 4.13918 16.5199 4.07522C16.201 4.04977 16.0415 4.03705 15.8879 4.00672C15.5358 3.93721 15.201 3.79854 14.9029 3.59874C14.7729 3.51158 14.6511 3.40781 14.4076 3.20027C13.7957 2.67883 13.4898 2.41811 13.1699 2.26522C12.43 1.91159 11.57 1.91159 10.8301 2.26522C10.5102 2.4181 10.2043 2.67883 9.5924 3.20027ZM16.3735 9.86314C16.6913 9.5453 16.6913 9.03 16.3735 8.71216C16.0557 8.39433 15.5403 8.39433 15.2225 8.71216L10.3723 13.5624L8.77746 11.9676C8.45963 11.6498 7.94432 11.6498 7.62649 11.9676C7.30866 12.2854 7.30866 12.8007 7.62649 13.1186L9.79678 15.2889C10.1146 15.6067 10.6299 15.6067 10.9478 15.2889L16.3735 9.86314Z' fill='%232C95E9'/%3E%3C/svg%3E\");\n        background-size: cover;\n        background-repeat: no-repeat;        \n    } \n\n    @media only screen and (max-width: 290px) {\n        .pagepilot-featuredReview {\n            flex-direction: column;\n        }\n        .pagepilot-featuredReview .content .stars, .pagepilot-featuredReview .content .author {\n            justify-content: center;\n        }\n        .pagepilot-featuredReview .content .review {\n            text-align: center;\n        }\n    }     \n</style>"
+            }
+          },
+          "collapsible-row-1": {
+            "type": "collapsible_tab",
+            "settings": {
+              "heading": "🚚 Shipping Information",
+              "icon": "none",
+              "content": "<p>We provide insured and tracked shipping for every order. The estimated delivery times after shipment are as follows: USA: 3-7 business days, UK: 7-18 business days, Australia: 7-18 business days, Canada: 7-18 business days, Europe: 7-18 business days, Rest of the world: 14-20 business days.</p>",
+              "page": ""
+            }
+          },
+          "6ed221cf-0fb3-4d66-a0dc-eb71ec0011cd": {
+            "type": "collapsible_tab",
+            "settings": {
+              "heading": "📦 Return Policy",
+              "icon": "none",
+              "content": "<p>We have a strong affection for our products, and we believe that you will share the same sentiment. Therefore, we are providing a 30-Day Trial, free from any risks.\nIf you are not fully satisfied with the outcome, we will reimburse you.</p>",
+              "page": ""
+            }
+          }
+        },
+        "block_order": [
+          "1b299bab-be7b-4589-8563-b6efa5d7c8ff",
+          "title",
+          "d9dd680a-ad3b-4936-ba9e-2c8d2195e9bc",
+          "price",
+          "c41cf637-e91f-43b8-8f26-65970b921237",
+          "variant_picker",
+          "quantity_selector",
+          "buy_buttons",
+          "40b4192f-6795-4553-af36-29a4c0fce1c6",
+          "18410b14-bf5d-48f4-a499-d7c5a2402eef",
+          "collapsible-row-1",
+          "6ed221cf-0fb3-4d66-a0dc-eb71ec0011cd"
+        ],
+        "custom_css": [
+          ".product {padding-top: 15px;}"
+        ],
+        "settings": {
+          "enable_sticky_info": true,
+          "media_size": "medium",
+          "gallery_layout": "thumbnail_slider",
+          "media_position": "left",
+          "mobile_thumbnails": "show",
+          "hide_variants": true,
+          "enable_video_looping": false,
+          "padding_top": 0,
+          "padding_bottom": 12
+        }
+      },
+      "9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc": {
+        "type": "image-with-text",
+        "blocks": {
+          "template--20352284950831__9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc-heading-1": {
+            "type": "heading",
+            "settings": {
+              "heading": "{data['hooks'][0]}",
+              "heading_size": "h1"
+            }
+          },
+          "template--20352284950831__9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc-text-1": {
+            "type": "text",
+            "settings": {
+              "text": "<p>{data['descriptions'][1]}</p>",
+              "text_style": "body"
+            }
+          },
+          "template--20352284950831__9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc-button-1": {
+            "type": "button",
+            "settings": {
+              "button_label": "👉🏻 Get Mine Now",
+              "button_link": "#"
+            }
+          }
+        },
+        "block_order": [
+          "template--20352284950831__9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc-heading-1",
+          "template--20352284950831__9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc-text-1",
+          "template--20352284950831__9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc-button-1"
+        ],
+        "custom_css": [
+          ".image-with-text__content a.button--primary {width: 100% !important;}"
+        ],
+        "settings": {
+          "image": "shopify:\/\/shop_images\/{data['image_links'][0]}.jpg",
+          "height": "adapt",
+          "desktop_image_width": "medium",
+          "layout": "image_first",
+          "desktop_content_position": "middle",
+          "desktop_content_alignment": "left",
+          "content_layout": "no-overlap",
+          "color_scheme": "background-1",
+          "mobile_content_alignment": "left",
+          "padding_top": 36,
+          "padding_bottom": 36
+        }
+      },
+      "91225abc-c627-4254-8216-da81acaf89e3": {
+        "type": "image-with-text",
+        "blocks": {
+          "template--20352284950831__91225abc-c627-4254-8216-da81acaf89e3-heading-1": {
+            "type": "heading",
+            "settings": {
+              "heading": "{data['hooks'][1]}",
+              "heading_size": "h1"
+            }
+          },
+          "template--20352284950831__91225abc-c627-4254-8216-da81acaf89e3-text-1": {
+            "type": "text",
+            "settings": {
+              "text": "<p>{data['descriptions'][2]}</p>",
+              "text_style": "body"
+            }
+          },
+          "template--20352284950831__91225abc-c627-4254-8216-da81acaf89e3-button-1": {
+            "type": "button",
+            "settings": {
+              "button_label": "👉🏻 Get Mine Now",
+              "button_link": "#"
+            }
+          }
+        },
+        "block_order": [
+          "template--20352284950831__91225abc-c627-4254-8216-da81acaf89e3-heading-1",
+          "template--20352284950831__91225abc-c627-4254-8216-da81acaf89e3-text-1",
+          "template--20352284950831__91225abc-c627-4254-8216-da81acaf89e3-button-1"
+        ],
+        "custom_css": [
+          ".image-with-text__content a.button--primary {width: 100% !important;}"
+        ],
+        "settings": {
+          "image": "shopify:\/\/shop_images\/{data['image_links'][1]}.jpg",
+          "height": "adapt",
+          "desktop_image_width": "medium",
+          "layout": "text_first",
+          "desktop_content_position": "middle",
+          "desktop_content_alignment": "left",
+          "content_layout": "no-overlap",
+          "color_scheme": "background-1",
+          "mobile_content_alignment": "left",
+          "padding_top": 36,
+          "padding_bottom": 36
+        }
+      },
+      "44b5285a-a789-4c62-920d-384fd3884cbb": {
+        "type": "image-with-text",
+        "blocks": {
+          "template--20352284950831__44b5285a-a789-4c62-920d-384fd3884cbb-heading-1": {
+            "type": "heading",
+            "settings": {
+              "heading": "{data['hooks'][2]}",
+              "heading_size": "h1"
+            }
+          },
+          "template--20352284950831__44b5285a-a789-4c62-920d-384fd3884cbb-text-1": {
+            "type": "text",
+            "settings": {
+              "text": "<p>{data['descriptions'][3]}</p>",
+              "text_style": "body"
+            }
+          },
+          "template--20352284950831__44b5285a-a789-4c62-920d-384fd3884cbb-button-1": {
+            "type": "button",
+            "settings": {
+              "button_label": "👉🏻 Add To Cart",
+              "button_link": "#"
+            }
+          }
+        },
+        "block_order": [
+          "template--20352284950831__44b5285a-a789-4c62-920d-384fd3884cbb-heading-1",
+          "template--20352284950831__44b5285a-a789-4c62-920d-384fd3884cbb-text-1",
+          "template--20352284950831__44b5285a-a789-4c62-920d-384fd3884cbb-button-1"
+        ],
+        "custom_css": [
+          ".image-with-text__content a.button--primary {width: 100% !important;}"
+        ],
+        "settings": {
+          "image": "shopify:\/\/shop_images\/{data['image_links'][2]}.jpg",
+          "height": "adapt",
+          "desktop_image_width": "medium",
+          "layout": "image_first",
+          "desktop_content_position": "middle",
+          "desktop_content_alignment": "left",
+          "content_layout": "no-overlap",
+          "color_scheme": "background-1",
+          "mobile_content_alignment": "left",
+          "padding_top": 36,
+          "padding_bottom": 36
+        }
+      },
+      "4a0e1039-cb40-469e-b5a6-714c3c5b85bc": {
+        "type": "multicolumn",
+        "blocks": {
+          "59ec2117-511a-4ad1-9975-7822d3d77c0d": {
+            "type": "column",
+            "settings": {
+              "image": "",
+              "title": "{data['full names'][1]}",
+              "text": "<p>\"{data['reviews'][1]}\"</p>",
+              "link_label": "★★★★★",
+              "link": ""
+            }
+          },
+          "b222f597-b900-4d5d-ab75-522d56bc54c5": {
+            "type": "column",
+            "settings": {
+              "image": "",
+              "title": "{data['full names'][2]}",
+              "text": "<p>\"{data['reviews'][2]}\"</p>",
+              "link_label": "★★★★★",
+              "link": ""
+            }
+          },
+          "1a0e7967-4034-4708-89e7-87c50c3b8333": {
+            "type": "column",
+            "settings": {
+              "image": "",
+              "title": "{data['full names'][3]}",
+              "text": "<p>\"{data['reviews'][3]}\"</p>",
+              "link_label": "★★★★★",
+              "link": ""
+            }
+          },
+          "b8f4f8f4-aaf7-4657-b6bb-1efb968475a6": {
+            "type": "column",
+            "settings": {
+              "image": "",
+              "title": "{data['full names'][4]}",
+              "text": "<p>\"{data['reviews'][4]}\"</p>",
+              "link_label": "★★★★★",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "59ec2117-511a-4ad1-9975-7822d3d77c0d",
+          "b222f597-b900-4d5d-ab75-522d56bc54c5",
+          "1a0e7967-4034-4708-89e7-87c50c3b8333",
+          "b8f4f8f4-aaf7-4657-b6bb-1efb968475a6"
+        ],
+        "custom_css": [
+          ".multicolumn {padding-top: 35px; background: #fdfeff;}",
+          ".multicolumn-card__image-wrapper .media {padding: 35px 0 !important;}",
+          ".multicolumn-card__image-wrapper .media img {border-radius: 100%; max-height: 75px; right: 0; left: 0; margin: auto;}",
+          ".multicolumn-card {background: #ffffff8f !important; box-shadow: rgba(112, 144, 176, 0.08) 14px 17px 40px 4px;}",
+          ".multicolumn-card__info h3 {font-weight: 700;}",
+          ".multicolumn-card__info {text-align: center;}",
+          ".multicolumn-card__info a.link span {display: none;}",
+          "h2.title {margin: auto;}"
+        ],
+        "settings": {
+          "title": "What people are saying",
+          "heading_size": "h1",
+          "image_width": "full",
+          "image_ratio": "adapt",
+          "columns_desktop": 4,
+          "column_alignment": "left",
+          "background_style": "primary",
+          "button_label": "",
+          "button_link": "#",
+          "color_scheme": "background-1",
+          "columns_mobile": "1",
+          "swipe_on_mobile": false,
+          "padding_top": 0,
+          "padding_bottom": 36
+        }
+      },
+      "18f5c195-5411-4a2f-a8b8-d5b280e2dcf5": {
+        "type": "image-with-text",
+        "blocks": {
+          "template--20352284950831__18f5c195-5411-4a2f-a8b8-d5b280e2dcf5-heading-1": {
+            "type": "heading",
+            "settings": {
+              "heading": "{data['hooks'][3]}",
+              "heading_size": "h1"
+            }
+          },
+          "template--20352284950831__18f5c195-5411-4a2f-a8b8-d5b280e2dcf5-text-1": {
+            "type": "text",
+            "settings": {
+              "text": "<p>{data['hooks'][4]}</p>",
+              "text_style": "subtitle"
+            }
+          },
+          "template--20352284950831__18f5c195-5411-4a2f-a8b8-d5b280e2dcf5-button-1": {
+            "type": "button",
+            "settings": {
+              "button_label": "👉🏻 Get Mine Now",
+              "button_link": "#"
+            }
+          }
+        },
+        "block_order": [
+          "template--20352284950831__18f5c195-5411-4a2f-a8b8-d5b280e2dcf5-heading-1",
+          "template--20352284950831__18f5c195-5411-4a2f-a8b8-d5b280e2dcf5-text-1",
+          "template--20352284950831__18f5c195-5411-4a2f-a8b8-d5b280e2dcf5-button-1"
+        ],
+        "custom_css": [
+          ".image-with-text__media-item {display: none;}",
+          "h2 {text-align: center; margin-left: auto; margin-right: auto;}",
+          ".image-with-text__text {text-align: center; margin-left: auto; margin-right: auto;}",
+          "a.button {margin-left: auto; margin-right: auto; width: 100%; max-width: 450px;}"
+        ],
+        "settings": {
+          "height": "adapt",
+          "desktop_image_width": "medium",
+          "layout": "image_first",
+          "desktop_content_position": "top",
+          "desktop_content_alignment": "left",
+          "content_layout": "no-overlap",
+          "color_scheme": "background-1",
+          "mobile_content_alignment": "left",
+          "padding_top": 36,
+          "padding_bottom": 36
+        }
+      },
+      "18c55fc3-540e-4ddd-9253-c1587cda3157": {
+        "type": "custom-liquid",
+        "custom_css": [],
+        "settings": {
+          "custom_liquid": "<script> \nfunction triggerAtcButton(event) {\n\t\t\t\t\t\t\tconst hrefAttr = event.currentTarget.getAttribute('href');\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tif(!hrefAttr) {\n\t\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t\t}\n\n    if(hrefAttr.trim() !== '' && hrefAttr !== '#')  return;          event.preventDefault();\n\n     const elementsToSearch = [\n    '.add-to-cart',\n    '.addCart',\n    '.atc',\n    '.new-form-atc',\n    '.add-item',\n    '#new-form-atc',\n    '#add-to-cart',\n    '#atc',\n    '.btn-add-to-cart',\n    '.add_to_cart',\n    '.btn-add-to-cart',\n    '#add-to-cart-button',\n    '#addtocart',\n    '.addToCart',\n    '.js-add-to-cart',\n    '#addToCart',\n    '.product__add-to-cart',\n    '.buy-btn',\n    '.cart-btn',\n    '.product-add',\n    '.btn-cart',\n    '.btn-add',\n    '#add-button',\n    '.cart-add',\n    '.js-add-to-cart-btn',\n    '#add-button-cart',\n    '.buy-button',\n    '.add-to-cart-btn',\n    '#btn-add-to-cart',\n    '.cart-action',\n    '.product-cart-btn',\n    '#product-add-to-cart',\n    '.atc-button',\n    '#cart-add-button',\n     'button.product-form__submit',\n      '.btn-cart-add',\n    '.btn-add-cart',\n    '.add-to-basket',\n    '#add-to-basket-btn',\n    '.add-to-trolley',\n    '.trolley-add',\n    '.buy-now-btn',\n    '#add-to-bag',\n    '#add-to-cart-btn',\n    '.product-addtocart',\n    '.cart-add-btn',\n    '#cart-add-to-cart',\n    '.product-form__buttons button[type=submit]'\n  ];\n\n  let foundElement = elementsToSearch.find(selector => document.querySelector(selector));\n\n  let addButton = document.querySelector('.product-form__buttons button[type=submit]');\n\n   if (addButton) {\n    addButton.click();\n    return;\n  }  \n\n  window.scrollTo({ top: 0, behavior: 'smooth' });\n}\n\nconst btnElements = document.querySelectorAll('a.button');\n\nbtnElements.forEach(btn => {\n  btn.addEventListener('click', triggerAtcButton);\n});\n</script>",
+          "color_scheme": "background-1",
+          "padding_top": 0,
+          "padding_bottom": 0
+        }
+      }
+    },
+    "order": [
+      "main",
+      "9fcb6ee8-13d9-47dc-9eed-ee12f85a6adc",
+      "91225abc-c627-4254-8216-da81acaf89e3",
+      "44b5285a-a789-4c62-920d-384fd3884cbb",
+      "4a0e1039-cb40-469e-b5a6-714c3c5b85bc",
+      "18f5c195-5411-4a2f-a8b8-d5b280e2dcf5",
+      "18c55fc3-540e-4ddd-9253-c1587cda3157"
+    ]
+  }

@@ -1,0 +1,557 @@
+/* Import Custom Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Root Variables for Color Palette */
+:root {
+    --primary-color: #6C63FF; /* Modern purple */
+    --secondary-color: #FF6584; /* Accent pink */
+    --dark-bg-color: #1F1F1F; /* Dark background */
+    --light-text-color: #FFFFFF; /* Light text */
+    --gradient-text: linear-gradient(90deg, #6C63FF, #FF6584);
+    --card-bg-color: #2C2C2C; /* Card background */
+    --modal-bg-color: #2C2C2C; /* Modal background */
+    --banner-bg-color: #343a40; /* Cookie banner background */
+    --hover-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Global Styles */
+body {
+    background-color: var(--dark-bg-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--light-text-color);
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+p {
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Rounded Section Styling */
+.rounded-section {
+    border-radius: 20px; /* Adjust the value as needed */
+    overflow: hidden; /* Ensure content stays within the rounded corners */
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: var(--dark-bg-color); /* Changed from transparent */
+    padding: 1rem 0;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    transition: background-color 0.5s ease; /* Smooth transition for dynamic changes */
+}
+
+.navbar .navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--light-text-color);
+}
+
+.navbar .nav-link {
+    color: var(--light-text-color);
+    margin-right: 1rem;
+    transition: color 0.3s;
+}
+
+.navbar .nav-link:hover {
+    color: var(--secondary-color);
+}
+
+.navbar .btn {
+    font-weight: 600;
+    border-radius: 30px; /* More rounded buttons */
+}
+
+.navbar-toggler {
+    border-color: var(--light-text-color);
+}
+
+.navbar-toggler-icon {
+    background-image: none;
+}
+
+.navbar-toggler-icon i {
+    font-size: 1.5rem;
+    color: var(--light-text-color);
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: var(--dark-bg-color);
+    padding: 150px 0 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px; /* Rounded edges */
+}
+
+.hero-section #particles-js {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientAnimation 5s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.hero-section .lead {
+    color: #CCCCCC;
+}
+
+.hero-section .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.hero-section .btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+/* Customer Ratings */
+.customer-ratings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rating-stars i {
+    font-size: 1.5rem;
+    color: #FFD700; /* Gold color for stars */
+}
+
+/* Secondary Call-to-Action */
+.secondary-cta {
+    background-color: #2C2C2C;
+    color: var(--light-text-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.secondary-cta h2 {
+    font-size: 2rem;
+}
+
+.secondary-cta p {
+    color: #CCCCCC;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+    background-color: var(--dark-bg-color);
+    color: var(--light-text-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.how-it-works-section .how-it-works-card {
+    background-color: var(--card-bg-color);
+    border-radius: 20px; /* Rounded edges */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.how-it-works-section .how-it-works-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--hover-shadow);
+}
+
+.how-it-works-section .how-it-works-card i {
+    font-size: 3rem;
+    color: var(--secondary-color);
+}
+
+.how-it-works-section .how-it-works-card h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.how-it-works-section .how-it-works-card p {
+    color: #CCCCCC;
+}
+
+/* Features Section */
+.features-section {
+    background-color: var(--dark-bg-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.features-section .feature-icon {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.features-section h2 {
+    font-size: 2rem;
+}
+
+.features-section h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.features-section p {
+    color: #CCCCCC;
+}
+
+/* Performance Metrics */
+.performance-metrics {
+    background-color: var(--dark-bg-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.performance-metrics .metric-card {
+    background-color: var(--card-bg-color);
+    border-radius: 20px; /* Rounded edges */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.performance-metrics .metric-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--hover-shadow);
+}
+
+.performance-metrics .metric-card .icon-lg {
+    font-size: 3rem;
+    color: var(--secondary-color);
+}
+
+.performance-metrics .metric-card h3 {
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+.performance-metrics .metric-card p {
+    color: #CCCCCC;
+}
+
+/* Client Trust Section */
+.client-trust-section {
+    background-color: var(--dark-bg-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.client-trust-section .client-logos img {
+    height: 50px;
+    opacity: 0.8;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.client-trust-section .client-logos img:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Carousel Styling */
+.carousel-inner {
+    display: flex;
+    align-items: center;
+}
+
+.carousel-item {
+    display: flex;
+    justify-content: center;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+@media (max-width: 768px) {
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 10%;
+    }
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    background-color: var(--dark-bg-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.testimonials-section .testimonial {
+    background-color: var(--card-bg-color);
+    border-radius: 20px; /* Rounded edges */
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.testimonials-section .testimonial:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.testimonials-section .testimonial img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Pricing Section */
+.pricing-section {
+    background-color: var(--dark-bg-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.pricing-section .card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20px; /* Rounded edges */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pricing-section .card.popular {
+    border: 2px solid var(--secondary-color);
+}
+
+.pricing-section .card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--hover-shadow);
+}
+
+.pricing-section .card-header {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.pricing-section .card-body {
+    background-color: var(--card-bg-color);
+    text-align: center;
+    color: var(--light-text-color); /* Improved text readability */
+}
+
+.pricing-section .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.pricing-section .card-text {
+    color: #CCCCCC;
+}
+
+.pricing-section .price {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.pricing-section .period {
+    font-size: 1rem;
+    color: #CCCCCC;
+}
+
+.pricing-section .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    border-radius: 30px; /* More rounded buttons */
+}
+
+.pricing-section .btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+/* Call to Action Section */
+.cta-section {
+    background-color: var(--dark-bg-color);
+    color: var(--light-text-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+}
+
+.cta-section p {
+    color: #CCCCCC;
+}
+
+.cta-section .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    border-radius: 30px; /* More rounded buttons */
+}
+
+.cta-section .btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+/* Cookie Consent Banner */
+.cookie-consent-banner {
+    background-color: var(--banner-bg-color);
+    color: var(--light-text-color);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.cookie-consent-banner p {
+    margin-bottom: 0.5rem;
+}
+
+.cookie-consent-banner .btn {
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+}
+
+.cookie-consent-banner .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.cookie-consent-banner .btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Footer Styling */
+footer {
+    background-color: #2C2C2C;
+    color: var(--light-text-color);
+    border-radius: 20px; /* Rounded edges */
+}
+
+footer a {
+    color: var(--light-text-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: var(--secondary-color);
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes riseUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.metric-card, .how-it-works-card, .testimonial, .notification-card {
+    animation: riseUp 1s ease-in-out;
+}
+
+/* Responsive Images */
+.img-fluid {
+    max-height: 400px;
+    object-fit: cover;
+}
+
+/* Additional Custom Styles */
+.card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20px; /* Rounded edges */
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-body {
+    background-color: var(--card-bg-color);
+    color: var(--light-text-color); /* Ensure text is readable */
+    border-radius: 0 0 20px 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card-text {
+    color: #CCCCCC;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.period {
+    font-size: 1rem;
+    color: #CCCCCC;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .hero-section {
+        padding: 100px 0 80px;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+
+    .hero-animations .rocket-animation {
+        width: 200px;
+    }
+}
+

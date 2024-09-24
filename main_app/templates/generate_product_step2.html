@@ -1,209 +1,386 @@
-{% extends 'base.html' %}
-{% load static %}
+<!-- main_app/templates/generate_product_step2.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 2: Select Images - PagePilot.ai</title>
 
-{% block content %}
-<div class="container mt-5">
-    <h2>Select Images for "{{ title }}"</h2>
-    <form method="post" action="{% url 'review_product' %}">
-        {% csrf_token %}
-        <input type="hidden" name="title" value="{{ title }}">
-        <input type="hidden" name="language" value="{{ language }}">
-        <div class="row" id="image-grid">
-            <!-- Images will be dynamically inserted here -->
-        </div>
-        <button type="submit" class="btn btn-primary">Next</button>
-    </form>
-</div>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- AOS CSS for animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
-<!-- Loading Modal -->
-<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content text-center">
-            <div class="modal-body">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Fetching images...</span>
+    <!-- Custom CSS -->
+    <link href="{% static 'css/generate_product_step2.css' %}" rel="stylesheet">
+</head>
+<body style="background-color: #1e1e1e; color: #ffffff; font-family: 'Inter', sans-serif;">
+
+    <!-- Flash Messages -->
+    <div class="container pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <p class="mt-3">Fetching and loading images. Please wait...</p>
-                <p id="loading-progress">0 of 0 images fetched</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container mt-3">
+        <!-- Step Indicator -->
+        <div class="row mb-4">
+            <div class="col text-center">
+                <h4 class="text-uppercase fw-bold display-5">Step 2 of 3: Select Images for "{{ title }}"</h4>
+                <p class="subtitle-text">We're fetching images from the URL you provided. Please select the ones you'd like to include.</p>
+            </div>
+        </div>
+
+        <!-- Enhanced Tutorial Section -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="card bg-dark text-white rounded-3 shadow-sm p-4">
+                    <h5 class="card-title display-6 text-center">📸 Choose the Perfect Images</h5>
+                    <p class="card-text mt-3">
+                        Selecting the right images is crucial for creating a high-converting landing page. Here are some tips to help you make the best choices:
+                    </p>
+                    <ul class="list-group list-group-flush mt-3">
+                        <li class="list-group-item bg-dark text-white">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>✔️ Prefer Square, High-Resolution Images:</strong> Ensure your images are clear and maintain quality across all devices.
+                        </li>
+                        <li class="list-group-item bg-dark text-white">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <strong>✔️ Choose Clean and Relevant Images:</strong> Images should be directly related to your product and free from clutter.
+                        </li>
+                        <li class="list-group-item bg-dark text-white">
+                            <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                            <strong>❌ Avoid Low-Quality or Blurry Images:</strong> Poor image quality can deter potential customers.
+                        </li>
+                        <li class="list-group-item bg-dark text-white">
+                            <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                            <strong>❌ Don't Use Irrelevant Stock Photos:</strong> Ensure that every image adds value and context to your landing page.
+                        </li>
+                    </ul>
+                    <!-- Permanent Informational Alerts -->
+                    <div class="alert alert-info mt-4" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <strong>Tip:</strong> Selecting a mix of product images and lifestyle shots can enhance your landing page's appeal.
+                    </div>
+                    <div class="alert alert-secondary mt-2" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <strong>Note:</strong> <em>Hover your mouse over an image to view its dimensions.</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Selection Grid -->
+        <form id="productForm" method="post" action="{% url 'review_product' %}">
+            {% csrf_token %}
+            <input type="hidden" name="title" value="{{ title }}">
+            <input type="hidden" name="language" value="{{ language }}">
+
+            <div class="row" id="image-grid">
+                <!-- Images will be dynamically inserted here -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="row mt-4 mb-4"> <!-- Added mb-4 for space under buttons -->
+                <div class="col text-center">
+                    <button type="button" class="btn btn-outline-light me-2" onclick="window.history.back();">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="nextButton" disabled>
+                        Next Step <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Loading Modal for Image Fetching -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white text-center rounded-3">
+                <div class="modal-body">
+                    <h5 class="mt-3">Fetching Images</h5>
+                    <p>This may take up to 30 seconds. Please wait...</p>
+                    <div class="progress mb-3" style="height: 20px;">
+                        <div id="loadingProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <p id="loading-progress">0 of 0 images fetched</p>
+                    <div class="d-flex justify-content-center">
+                        <button id="cancelButton" class="btn btn-danger mt-3" style="display: none;">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Styles -->
-<style>
-.image-checkbox {
-    position: relative;
-    cursor: pointer;
-    display: block;
-}
-.image-checkbox input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-.image-checkbox .check-icon {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    color: #007bff;
-    display: none;
-    font-size: 1.5rem;
-}
-.image-checkbox input[type="checkbox"]:checked ~ .check-icon {
-    display: block;
-}
-.tooltip-custom {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    pointer-events: none;
-    z-index: 1000;
-    font-size: 12px;
-}
-</style>
+    <!-- Step 3 Loading Modal with Dynamic Informational Steps -->
+    <div class="modal fade" id="step3LoadingModal" tabindex="-1" aria-labelledby="step3LoadingModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white text-center rounded-3">
+                <div class="modal-body">
+                    <h5 class="mt-3">Processing Your Selection</h5>
+                    <p id="step3Status">Initializing...</p>
+                    <div class="progress mb-3" style="height: 20px;">
+                        <div id="step3ProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button id="step3CancelButton" class="btn btn-danger mt-3">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- JavaScript -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const imageGrid = document.getElementById('image-grid');
-    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
-    const loadingProgress = document.getElementById('loading-progress');
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    
+    <!-- AOS Library for Animations -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
 
-    // Function to fetch images via AJAX
-    function fetchImages() {
-        loadingModal.show();  // Show loading modal
+    <!-- Custom JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        AOS.init(); // Initialize AOS animations
 
-        fetch("{% url 'fetch_images' %}")
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
-                    window.location.href = "{% url 'dashboard' %}";
-                    return;
-                }
+        const imageGrid = document.getElementById('image-grid');
+        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        const step3LoadingModal = new bootstrap.Modal(document.getElementById('step3LoadingModal'));
+        const loadingProgress = document.getElementById('loading-progress');
+        const loadingProgressBar = document.getElementById('loadingProgressBar');
+        const cancelButton = document.getElementById('cancelButton');
+        const step3CancelButton = document.getElementById('step3CancelButton');
+        const nextButton = document.getElementById('nextButton');
+        const productForm = document.getElementById('productForm');
 
-                // Update the title if it's still the placeholder
-                const titleElement = document.querySelector('h2');
-                titleElement.innerText = `Select Images for "${data.title}"`;
+        let fetchController = new AbortController();
+        let step3Controller = new AbortController();
 
-                const images = data.images;
-                let fetchedCount = 0;
+        // Show the cancel button after 3 seconds
+        setTimeout(() => {
+            cancelButton.style.display = 'block';
+        }, 3000);
 
-                // Function to add images one by one with a delay
-                images.forEach((image, index) => {
-                    setTimeout(() => {
-                        // Create the image card
-                        const col = document.createElement('div');
-                        col.className = 'col-lg-2 col-md-3 col-sm-4 col-6 mb-4';
-
-                        const card = document.createElement('div');
-                        card.className = 'card image-container';
-
-                        const label = document.createElement('label');
-                        label.className = 'image-checkbox';
-
-                        const img = document.createElement('img');
-                        img.dataset.src = image.src;
-                        img.className = 'card-img-top img-fluid lazy-load';
-                        img.alt = 'Image';
-                        img.dataset.width = image.width;
-                        img.dataset.height = image.height;
-
-                        const checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.name = 'selected_images';
-                        checkbox.value = image.src;
-
-                        const checkIcon = document.createElement('i');
-                        checkIcon.className = 'bi bi-check-circle-fill check-icon';
-
-                        label.appendChild(img);
-                        label.appendChild(checkbox);
-                        label.appendChild(checkIcon);
-                        card.appendChild(label);
-                        col.appendChild(card);
-                        imageGrid.appendChild(col);
-
-                        // Initialize lazy loading for the new image
-                        initializeLazyLoading(img);
-
-                        // Initialize hover effects for the new image
-                        initializeHoverEffects(img);
-
-                        // Update the progress
-                        fetchedCount++;
-                        loadingProgress.innerText = `${fetchedCount} of ${images.length} images fetched`;
-
-                        // Hide the loading modal when all images are fetched
-                        if (fetchedCount === images.length) {
-                            setTimeout(() => {
-                                loadingModal.hide();
-                            }, 500);  // Delay to ensure the last image is visible
-                        }
-                    }, index * 100); // Adjust the delay (in milliseconds) as needed
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching images:', error);
-                alert('An error occurred while fetching images.');
-                window.location.href = "{% url 'dashboard' %}";
-            });
-    }
-
-    // Function to initialize lazy loading for a single image
-    function initializeLazyLoading(lazyImage) {
-        if ('IntersectionObserver' in window) {
-            const lazyImageObserver = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        lazyImageObserver.unobserve(img);
-                    }
-                });
-            });
-            lazyImageObserver.observe(lazyImage);
-        } else {
-            // Fallback for older browsers
-            lazyImage.src = lazyImage.dataset.src;
-        }
-    }
-
-    // Function to initialize hover effects for a single image
-    function initializeHoverEffects(img) {
-        img.addEventListener('mouseover', function (event) {
-            const width = this.dataset.width;
-            const height = this.dataset.height;
-            const tooltip = document.createElement('div');
-            tooltip.classList.add('tooltip-custom');
-            tooltip.innerText = `Dimensions: ${width} x ${height} px`;
-            document.body.appendChild(tooltip);
-            tooltip.style.left = `${event.pageX + 10}px`;
-            tooltip.style.top = `${event.pageY + 10}px`;
-
-            const moveTooltip = (e) => {
-                tooltip.style.left = `${e.pageX + 10}px`;
-                tooltip.style.top = `${e.pageY + 10}px`;
-            };
-
-            const removeTooltip = () => {
-                tooltip.remove();
-                img.removeEventListener('mousemove', moveTooltip);
-                img.removeEventListener('mouseout', removeTooltip);
-            };
-
-            img.addEventListener('mousemove', moveTooltip);
-            img.addEventListener('mouseout', removeTooltip);
+        cancelButton.addEventListener('click', function() {
+            fetchController.abort();
+            window.location.href = "{% url 'dashboard' %}?cancelled=true";
         });
-    }
 
-    // Fetch images when the page loads
-    fetchImages();
-});
-</script>
-{% endblock %}
+        step3CancelButton.addEventListener('click', function() {
+            step3Controller.abort();
+            window.location.href = "{% url 'dashboard' %}?cancelled=true";
+        });
+
+        // Function to fetch images via AJAX
+        function fetchImages() {
+            loadingModal.show();  // Show loading modal
+
+            fetch("{% url 'fetch_images' %}", { signal: fetchController.signal })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                        window.location.href = "{% url 'dashboard' %}";
+                        return;
+                    }
+
+                    // Update the title if it's still the placeholder
+                    const titleElement = document.querySelector('h4');
+                    titleElement.innerText = `Step 2 of 3: Select Images for "${data.title}"`;
+
+                    const images = data.images;
+                    let fetchedCount = 0;
+                    const totalImages = images.length;
+                    loadingProgress.innerText = `${fetchedCount} of ${totalImages} images fetched`;
+
+                    // Update progress bar
+                    loadingProgressBar.style.width = `0%`;
+
+                    // Enable the Next button when at least one image is selected
+                    updateNextButtonState();
+
+                    // Function to add images one by one with a delay
+                    images.forEach((image, index) => {
+                        setTimeout(() => {
+                            // Create the image card
+                            const col = document.createElement('div');
+                            col.className = 'col-lg-2 col-md-3 col-sm-4 col-6 mb-4';
+
+                            const card = document.createElement('div');
+                            card.className = 'card image-container bg-dark';
+
+                            const label = document.createElement('label');
+                            label.className = 'image-checkbox';
+
+                            const img = document.createElement('img');
+                            img.dataset.src = image.src;
+                            img.className = 'card-img-top img-fluid lazy-load';
+                            img.alt = 'Product Image';
+                            img.dataset.width = image.width;
+                            img.dataset.height = image.height;
+
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.name = 'selected_images';
+                            checkbox.value = image.src;
+                            checkbox.addEventListener('change', updateNextButtonState);
+
+                            const checkIcon = document.createElement('i');
+                            checkIcon.className = 'bi bi-check-circle-fill check-icon';
+
+                            label.appendChild(img);
+                            label.appendChild(checkbox);
+                            label.appendChild(checkIcon);
+                            card.appendChild(label);
+                            col.appendChild(card);
+                            imageGrid.appendChild(col);
+
+                            // Initialize lazy loading for the new image
+                            initializeLazyLoading(img);
+
+                            // Initialize hover effects for the new image
+                            initializeHoverEffects(img);
+
+                            // Update the progress
+                            fetchedCount++;
+                            loadingProgress.innerText = `${fetchedCount} of ${totalImages} images fetched`;
+                            loadingProgressBar.style.width = `${(fetchedCount / totalImages) * 100}%`;
+
+                            // Hide the loading modal when all images are fetched
+                            if (fetchedCount === totalImages) {
+                                setTimeout(() => {
+                                    loadingModal.hide();
+                                }, 500);  // Delay to ensure the last image is visible
+                            }
+                        }, index * 100); // Adjust the delay (in milliseconds) as needed
+                    });
+                })
+                .catch(error => {
+                    if (error.name === 'AbortError') {
+                        console.log('Image fetching aborted');
+                    } else {
+                        console.error('Error fetching images:', error);
+                        alert('An error occurred while fetching images.');
+                    }
+                    window.location.href = "{% url 'dashboard' %}";
+                });
+        }
+
+        // Function to initialize lazy loading for a single image
+        function initializeLazyLoading(lazyImage) {
+            if ('IntersectionObserver' in window) {
+                const lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            lazyImageObserver.unobserve(img);
+                        }
+                    });
+                });
+                lazyImageObserver.observe(lazyImage);
+            } else {
+                // Fallback for older browsers
+                lazyImage.src = lazyImage.dataset.src;
+            }
+        }
+
+        // Function to initialize hover effects for a single image
+        function initializeHoverEffects(img) {
+            img.addEventListener('mouseover', function (event) {
+                const width = this.dataset.width;
+                const height = this.dataset.height;
+                const tooltip = document.createElement('div');
+                tooltip.classList.add('tooltip-custom');
+                tooltip.innerText = `Dimensions: ${width} x ${height} px`;
+                document.body.appendChild(tooltip);
+                tooltip.style.left = `${event.pageX + 10}px`;
+                tooltip.style.top = `${event.pageY + 10}px`;
+
+                const moveTooltip = (e) => {
+                    tooltip.style.left = `${e.pageX + 10}px`;
+                    tooltip.style.top = `${e.pageY + 10}px`;
+                };
+
+                const removeTooltip = () => {
+                    tooltip.remove();
+                    img.removeEventListener('mousemove', moveTooltip);
+                    img.removeEventListener('mouseout', removeTooltip);
+                };
+
+                img.addEventListener('mousemove', moveTooltip);
+                img.addEventListener('mouseout', removeTooltip);
+            });
+        }
+
+        // Function to update the state of the Next button
+        function updateNextButtonState() {
+            const selectedCheckboxes = document.querySelectorAll('input[name="selected_images"]:checked');
+            nextButton.disabled = selectedCheckboxes.length === 0;
+        }
+
+        // Function to handle dynamic steps in Step 3 Loading Modal
+        function handleStep3Loading() {
+            const step3Status = document.getElementById('step3Status');
+            const step3ProgressBar = document.getElementById('step3ProgressBar');
+            const steps = [
+                { text: 'Loading...', progress: 8 },
+                { text: 'Analyzing Page Content...', progress: 16 },
+                { text: 'Creating AI Descriptions...', progress: 24 },
+                { text: 'Optimizing SEO Parameters...', progress: 32 },
+                { text: 'Designing Layout...', progress: 40 },
+                { text: 'Uploading Images...', progress: 48 },
+                { text: 'Configuring Settings...', progress: 56 },
+                { text: 'Integrating Payment Gateway...', progress: 64 },
+                { text: 'Testing Functionality...', progress: 72 },
+                { text: 'Finalizing Content...', progress: 80 },
+                { text: 'Deploying to Server...', progress: 88 },
+                { text: 'Finalizing...', progress: 100 },
+            ];
+            let currentStep = 0;
+
+            const stepInterval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    step3Status.innerText = steps[currentStep].text;
+                    step3ProgressBar.style.width = `${steps[currentStep].progress}%`;
+                    currentStep++;
+                } else {
+                    clearInterval(stepInterval);
+                    // Do not hide the modal here. Wait for the server response to handle redirection.
+                }
+            }, 1000); // Change step every 1 second
+        }
+
+        // Handle form submission to show Step 3 Loading Modal with dynamic steps
+        productForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Show Step 3 Loading Modal
+            step3LoadingModal.show();
+            
+            productForm.submit();
+
+            // Start dynamic steps
+            handleStep3Loading();
+
+        });
+
+        // Fetch images when the page loads
+        fetchImages();
+    });
+    </script>
+</body>
+</html>

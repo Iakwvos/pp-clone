@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Store</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Store Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ store.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="shop_url" class="form-label">Shopify URL</label>
+            <input type="url" class="form-control" id="shop_url" name="shop_url" value="{{ store.shop_url }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="shopify_api_key" class="form-label">API Key</label>
+            <input type="text" class="form-control" id="shopify_api_key" name="shopify_api_key" value="{{ store.shopify_api_key }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="shopify_api_secret" class="form-label">API Secret</label>
+            <input type="text" class="form-control" id="shopify_api_secret" name="shopify_api_secret" value="{{ store.shopify_api_secret }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Store</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,284 @@
+/* main_app/static/css/generate_product_step3.css */
+
+/* Root Variables Matching dashboard.css */
+:root {
+    --primary-color: #6C63FF;       /* Modern purple */
+    --secondary-color: #FF6584;     /* Accent pink */
+    --background-color: #1E1E1E;    /* Dark background */
+    --text-color: #FFFFFF;          /* White text for dark background */
+    --card-bg-color: #2C2C2C;       /* Dark grey cards */
+    --border-color: #444444;        /* Darker border color */
+    --hover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --light-text-color: #CCCCCC;    /* Light grey text */
+    --shopify-green: #96bf48;       /* Shopify green */
+    --modal-bg-color: #2C2C2C;      /* Modal background color */
+    --modal-text-color: #FFFFFF;    /* Modal text color */
+    --button-hover-opacity: 0.9;
+    --max-content-width: 1800px;    /* Increased maximum width for main content */
+}
+
+/* Update body background and text color */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main Content Styling */
+.main-content {
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 1200px; /* Increased max-width for more spacious layout */
+}
+
+/* Greeting Banner */
+.greeting-banner {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    border-radius: 15px;
+    padding: 30px 20px; /* Increased padding for more space */
+    margin-bottom: 40px; /* Increased margin for better separation */
+    box-shadow: var(--hover-shadow);
+    text-align: center;
+}
+
+.greeting-banner h3 {
+    font-size: 2.5rem; /* Increased font size for prominence */
+    margin-bottom: 15px;
+}
+
+.greeting-banner p {
+    font-size: 1.2rem;
+}
+
+/* Card Styling */
+.card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    box-shadow: var(--hover-shadow);
+    color: var(--text-color);
+    margin-bottom: 30px; /* Increased margin for better separation */
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 20px; /* Increased padding for better spacing */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-size: 1.5rem; /* Increased font size for headers */
+}
+
+.card-body {
+    padding: 30px; /* Increased padding for more space */
+}
+
+/* Images Preview Section */
+.images-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Increased gap between images */
+    justify-content: center;
+}
+
+.image-container {
+    width: 200px; /* Increased width for better visibility */
+    height: 200px; /* Increased height for better visibility */
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: var(--hover-shadow);
+    transition: transform 0.3s;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.image-container img:hover {
+    transform: scale(1.05);
+}
+
+/* Product Information Section */
+.product-info .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Increased gap between form groups */
+}
+
+.product-info .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-info .form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 1.1rem; /* Increased font size for labels */
+}
+
+.product-info .form-control {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 15px; /* Increased padding for better input area */
+    font-size: 1rem; /* Increased font size for inputs */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.product-info .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(108, 99, 255, 0.5); /* Enhanced focus shadow */
+    outline: none;
+}
+
+/* Input Groups (Numbered Inputs) */
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group-text {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px 0 0 10px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.input-group .form-control {
+    border-radius: 0 10px 10px 0;
+}
+
+/* Action Buttons */
+.action-buttons .btn {
+    padding: 15px 30px; /* Increased padding for better click area */
+    font-size: 1.1rem; /* Increased font size for better readability */
+    border-radius: 10px;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.action-buttons .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.action-buttons .btn-primary:hover {
+    opacity: var(--button-hover-opacity);
+    transform: translateY(-2px);
+}
+
+.action-buttons .btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.action-buttons .btn-secondary:hover {
+    opacity: var(--button-hover-opacity);
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .main-content {
+        max-width: 1000px; /* Adjust max-width for smaller screens */
+    }
+
+    .image-container {
+        width: 180px;
+        height: 180px;
+    }
+
+    .greeting-banner h3 {
+        font-size: 2.2rem;
+    }
+
+    .greeting-banner p {
+        font-size: 1.1rem;
+    }
+
+    .card-header h5 {
+        font-size: 1.4rem;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    .product-info .form-control {
+        padding: 12px;
+    }
+
+    .action-buttons .btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        max-width: 90%; /* Use percentage width for better mobile responsiveness */
+    }
+
+    .images-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-container {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+    }
+
+    .greeting-banner h3 {
+        font-size: 2rem;
+    }
+
+    .greeting-banner p {
+        font-size: 1rem;
+    }
+
+    .card-header h5 {
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .product-info .form-label {
+        font-size: 1rem;
+    }
+
+    .product-info .form-control {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 12px 0;
+        font-size: 1rem;
+    }
+
+    .input-group-text {
+        font-size: 0.9rem;
+    }
+}

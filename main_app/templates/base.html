@@ -5,7 +5,10 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}PagePilot Clone{% endblock %}</title>
+    <title>{% block title %}PagePilot.ai{% endblock %}</title>
+
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,48 +16,63 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
+    <!-- AOS CSS for animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    
     <!-- Custom CSS -->
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'main_page' %}">
-                <img src="{% static 'images/logo.png' %}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
-                PagePilot Clone
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    {% if request.session.user_id %}
+    {% block header %}
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="{% url 'main_page' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="PagePilot.ai Logo" width="40" height="40">
+                    <span class="ms-2 fw-bold">PagePilot.ai</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="bi bi-list text-white"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                            <a class="nav-link" href="#how-it-works">How It Works</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'settings' %}">Settings</a>
+                            <a class="nav-link" href="#features">Features</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            <a class="nav-link" href="#pricing">Pricing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white ms-2" href="{% url 'signup' %}">Sign Up</a>
+                            <a class="nav-link" href="#faq">FAQ</a>
                         </li>
-                    {% endif %}
-                </ul>
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-light rounded-pill ms-3" href="{% url 'logout' %}">Logout</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary rounded-pill ms-3" href="{% url 'dashboard' %}">Dashboard</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-light rounded-pill ms-3" href="{% url 'login' %}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary rounded-pill ms-3" href="{% url 'signup' %}">Try PagePilot.ai</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
+    {% endblock %}
     
     <!-- Flash Messages -->
-    <div class="container mt-3">
+    <div class="container mt-5 pt-4">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -66,19 +84,256 @@
     </div>
     
     <!-- Main Content -->
+    {% block main_content %}
     <div class="container">
         {% block content %}
         {% endblock %}
     </div>
+    {% endblock %}
+    
+    <!-- Cookie Consent Banner -->
+    <div class="cookie-consent-banner position-fixed bottom-0 w-100 bg-dark text-white p-3">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="mb-3 mb-md-0">We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
+            <div>
+                <button class="btn btn-outline-light me-2 mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#cookieModal">Customize</button>
+                <button class="btn btn-light me-2 mb-2 mb-md-0">Reject All</button>
+                <button class="btn btn-primary" id="acceptCookies">Accept All</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cookie Consent Modal -->
+    <div class="modal fade" id="cookieModal" tabindex="-1" aria-labelledby="cookieModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cookieModalLabel">Cookie Preferences</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="cookiePreferencesForm">
+                        <h6>Necessary Cookies</h6>
+                        <p>These cookies are essential for the website to function properly.</p>
+                        <hr>
+                        <h6>Functional Cookies</h6>
+                        <p>These cookies enable enhanced functionality and personalization.</p>
+                        <hr>
+                        <h6>Analytics Cookies</h6>
+                        <p>These cookies help us understand how visitors interact with our website.</p>
+                        <hr>
+                        <h6>Advertisement Cookies</h6>
+                        <p>These cookies are used to deliver relevant advertisements to you.</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="savePreferences">Save Preferences</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Footer -->
-    <footer class="bg-white text-center text-lg-start mt-5 border-top">
+    <footer class="bg-dark text-center text-lg-start mt-5 border-top rounded-section">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">PagePilot.ai</h5>
+                    <p>
+                        Empowering you to create high-converting landing pages effortlessly with our AI-powered tools.
+                    </p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Links</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'settings' %}" class="text-white" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
+                        <li><a href="{% url 'settings' %}" class="text-white" target="_blank" rel="noopener noreferrer">Terms of Use</a></li>
+                        <li><a href="{% url 'settings' %}" class="text-white" target="_blank" rel="noopener noreferrer">Contact</a></li>
+                        <li><a href="{% url 'settings' %}" class="text-white" target="_blank" rel="noopener noreferrer">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Follow Us</h5>
+                    <a href="#" class="text-white me-3" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white me-3" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="text-white me-3" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+        </div>
         <div class="text-center p-3">
-            © 2024 PagePilot Clone. All rights reserved.
+            © 2024 PagePilot.ai. All rights reserved.
         </div>
     </footer>
     
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    
+    <!-- AOS Library for Animations -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
+    
+    <!-- Particles.js for Background Animations -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS
+            AOS.init({
+                duration: 1000,
+                once: true,
+            });
+
+            // Initialize Particles.js if present
+            if (document.getElementById('particles-js')) {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": {
+                            "value": 50,
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": "#ffffff"
+                        },
+                        "shape": {
+                            "type": "circle",
+                            "stroke": {
+                                "width": 0,
+                                "color": "#000000"
+                            },
+                        },
+                        "opacity": {
+                            "value": 0.5,
+                            "random": false,
+                        },
+                        "size": {
+                            "value": 3,
+                            "random": true,
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "#ffffff",
+                            "opacity": 0.4,
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 2,
+                            "direction": "none",
+                            "random": false,
+                            "straight": false,
+                            "out_mode": "out",
+                            "bounce": false,
+                            "attract": {
+                                "enable": false,
+                            }
+                        }
+                    },
+                    "interactivity": {
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "repulse"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            },
+                        },
+                        "modes": {
+                            "repulse": {
+                                "distance": 100,
+                                "duration": 0.4
+                            },
+                            "push": {
+                                "particles_nb": 4
+                            },
+                        }
+                    },
+                    "retina_detect": true
+                });
+            }
+
+            // Smooth Scrolling for Anchor Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 70, // Adjust for fixed navbar height
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Flash Messages Timeout
+            var alerts = document.querySelectorAll('.alert');
+            
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    var bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }, 5000);
+            });
+
+            // Cookie Consent Functionality
+            const cookieBanner = document.querySelector('.cookie-consent-banner');
+            const acceptCookiesBtn = document.getElementById('acceptCookies');
+            const savePreferencesBtn = document.getElementById('savePreferences');
+            const cookieModal = new bootstrap.Modal(document.getElementById('cookieModal'));
+
+            if (getCookie('cookiesAccepted') === 'true') {
+                cookieBanner.style.display = 'none';
+            }
+
+            acceptCookiesBtn.addEventListener('click', function() {
+                setCookie('cookiesAccepted', 'true', 365);
+                cookieBanner.style.display = 'none';
+            });
+
+            savePreferencesBtn.addEventListener('click', function() {
+                setCookie('cookiesAccepted', 'true', 365);
+                cookieModal.hide();
+                cookieBanner.style.display = 'none';
+            });
+
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days*24*60*60*1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            }
+
+            function getCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            }
+
+            // Footer Background Transition on Scroll
+            window.addEventListener('scroll', function() {
+                const footer = document.querySelector('footer');
+                const scrollHeight = document.body.scrollHeight - window.innerHeight;
+                const scrollPosition = window.scrollY;
+                const opacity = Math.min(scrollPosition / (scrollHeight / 2), 1);
+                footer.style.backgroundColor = `rgba(44, 44, 44, ${opacity})`;
+            });
+        });
+    </script>
 </body>
 </html>

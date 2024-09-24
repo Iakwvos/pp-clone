@@ -1,0 +1,272 @@
+<!-- main_app/templates/upgrade_plan.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Upgrade Plan - PagePilot.ai{% endblock %}
+
+{% block header %}
+<!-- Header is intentionally left empty to exclude it from this page -->
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+<link rel="stylesheet" href="{% static 'css/upgrade_plan.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    {% include '_sidebar.html' %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="upgrade-container">
+            <h2 class="mb-4 text-center">Choose the Perfect Plan for Your Needs</h2>
+            <div class="plans-wrapper">
+                {% for plan_name, limits in plan_limits.items %}
+                    <div class="plan-card {% if plan_name == current_plan %}current-plan{% endif %} {% if plan_name == 'Starter' and plan_name != current_plan %}popular-plan{% endif %}">
+                        {% if plan_name == 'Starter' and plan_name != current_plan %}
+                            <div class="badge popular-plan-badge">Most Popular</div>
+                        {% endif %}
+                        {% if plan_name == current_plan %}
+                            <div class="badge current-plan-badge">Your Current Plan</div>
+                        {% endif %}
+                        <div class="plan-header">
+                            <h3>{{ plan_name }}</h3>
+                            <p class="price">${{ limits.price }}<span>/month</span></p>
+                        </div>
+                        <div class="plan-features">
+                            <ul class="visible-features">
+                                {% for feature in limits.features|slice:":3" %}
+                                    <li><i class="bi bi-check-circle-fill"></i> {{ feature }}</li>
+                                {% endfor %}
+                            </ul>
+                            <ul class="hidden-features">
+                                {% for feature in limits.features|slice:"3:" %}
+                                    <li><i class="bi bi-check-circle-fill"></i> {{ feature }}</li>
+                                {% endfor %}
+                            </ul>
+                            <div class="expand-indicator" role="button" aria-expanded="false" tabindex="0" aria-label="Expand plan details">
+                                <i class="bi bi-chevron-down"></i>
+                            </div>
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="plan" value="{{ plan_name }}">
+                            <button type="submit" class="btn btn-select-plan">
+                                Select Plan
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+
+        // Initialize Particles.js if present
+        if (document.getElementById('particles-js')) {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 50,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                        }
+                    }
+                },
+                "interactivity": {
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                    },
+                    "modes": {
+                        "repulse": {
+                            "distance": 100,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                    }
+                },
+                "retina_detect": true
+            });
+        }
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 70, // Adjust for fixed navbar height if applicable
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Flash Messages Timeout
+        var alerts = document.querySelectorAll('.alert');
+        
+        alerts.forEach(function(alert) {
+            setTimeout(function() {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            }, 5000);
+        });
+
+        // Cookie Consent Functionality
+        const cookieBanner = document.querySelector('.cookie-consent-banner');
+        const acceptCookiesBtn = document.getElementById('acceptCookies');
+        const savePreferencesBtn = document.getElementById('savePreferences');
+        const cookieModal = new bootstrap.Modal(document.getElementById('cookieModal'));
+
+        if (getCookie('cookiesAccepted') === 'true') {
+            cookieBanner.style.display = 'none';
+        }
+
+        acceptCookiesBtn.addEventListener('click', function() {
+            setCookie('cookiesAccepted', 'true', 365);
+            cookieBanner.style.display = 'none';
+        });
+
+        savePreferencesBtn.addEventListener('click', function() {
+            setCookie('cookiesAccepted', 'true', 365);
+            cookieModal.hide();
+            cookieBanner.style.display = 'none';
+        });
+
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days*24*60*60*1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        // Footer Background Transition on Scroll
+        window.addEventListener('scroll', function() {
+            const footer = document.querySelector('footer');
+            const scrollHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPosition = window.scrollY;
+            const opacity = Math.min(scrollPosition / (scrollHeight / 2), 1);
+            footer.style.backgroundColor = `rgba(44, 44, 44, ${opacity})`;
+        });
+
+        // Plan Card Toggle Functionality with Exclusive Expansion and Animation
+        const planCards = document.querySelectorAll('.plan-card');
+
+        planCards.forEach(card => {
+            const expandIndicator = card.querySelector('.expand-indicator');
+            const hiddenFeatures = card.querySelector('.hidden-features');
+
+            expandIndicator.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                // Check if this card is already expanded
+                const isExpanded = card.classList.contains('expanded');
+
+                // Collapse all other cards
+                planCards.forEach(otherCard => {
+                    if (otherCard !== card && otherCard.classList.contains('expanded')) {
+                        otherCard.classList.remove('expanded');
+                        const otherExpandIndicator = otherCard.querySelector('.expand-indicator i');
+                        if (otherExpandIndicator) {
+                            otherExpandIndicator.classList.remove('rotate');
+                            otherCard.querySelector('.expand-indicator').setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                });
+
+                if (isExpanded) {
+                    // Collapse this card
+                    card.classList.remove('expanded');
+                    expandIndicator.querySelector('i').classList.remove('rotate');
+                    expandIndicator.setAttribute('aria-expanded', 'false');
+                } else {
+                    // Expand this card
+                    card.classList.add('expanded');
+                    expandIndicator.querySelector('i').classList.add('rotate');
+                    expandIndicator.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            // Keyboard Accessibility for Expand Indicator
+            expandIndicator.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    expandIndicator.click();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

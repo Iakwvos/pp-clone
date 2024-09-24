@@ -1,0 +1,105 @@
+/* main_app/static/css/generate_product_step2.css */
+
+/* Step Indicator Styling */
+.step-indicator {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Enhanced Tutorial Section */
+.card-title.display-6 {
+    font-size: 1.75rem;
+}
+
+/* Subtitle Styling */
+.subtitle-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #d1d1d1; /* Adjusted for better contrast on dark background */
+}
+
+/* Image Selection Styling */
+.image-checkbox {
+    position: relative;
+    cursor: pointer;
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.image-checkbox img {
+    border-radius: 10px;
+}
+
+.image-checkbox:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+.image-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.image-checkbox .check-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #0d6efd; /* Bootstrap primary color */
+    display: none;
+    font-size: 1.5rem;
+}
+
+.image-checkbox input[type="checkbox"]:checked ~ .check-icon {
+    display: block;
+}
+
+.tooltip-custom {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 1000;
+    font-size: 12px;
+}
+
+/* Disable Next Button */
+#nextButton[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive Adjustments for Tutorial Card */
+@media (max-width: 768px) {
+    .card-title.display-6 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Custom Styles for Step 3 Loading Modal */
+#step3Status {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+/* Remove space at the top */
+body {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.container {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+/* Add space under Back and Next buttons */
+.row.mt-4.mb-4 {
+    margin-bottom: 20px; /* Adjust the value as needed */
+}
