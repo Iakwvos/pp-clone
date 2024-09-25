@@ -1,0 +1,508 @@
+/* Root Variables for Dashboard Color Palette */
+:root {
+    --primary-color: #6C63FF;       /* Modern purple */
+    --secondary-color: #FF6584;     /* Accent pink */
+    --background-color: #1E1E1E;    /* Dark background */
+    --text-color: #FFFFFF;          /* White text for dark background */
+    --card-bg-color: #2C2C2C;       /* Dark grey cards */
+    --border-color: #444444;        /* Darker border color */
+    --hover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --light-text-color: #CCCCCC;    /* Light grey text */
+    --shopify-green: #96bf48;       /* Shopify green */
+    --modal-bg-color: #2C2C2C;      /* Modal background color */
+    --modal-text-color: #FFFFFF;    /* Modal text color */
+    --button-hover-opacity: 0.9;
+    --max-content-width: 1800px;    /* Increased maximum width for main content */
+}
+
+/* Update body background and text color */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background-color: var(--card-bg-color);
+    padding: 2rem 1.5rem;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+    transition: width 0.3s;
+    overflow-y: auto;
+}
+
+.sidebar:hover {
+    width: 270px;
+}
+
+.sidebar .sidebar-header a {
+    font-size: 1.5rem;
+    color: var(--light-text-color);
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .sidebar-header a:hover {
+    color: var(--secondary-color);
+}
+
+.sidebar .nav-link {
+    color: var(--light-text-color);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    border-radius: 15px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    transform: translateX(5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.sidebar .nav-link i {
+    margin-right: 8px;
+}
+
+/* Main Content Styling */
+.main-content {
+    margin-left: 270px;
+    padding: 2rem 4rem;
+    max-width: var(--max-content-width);
+    margin-right: auto;
+}
+
+/* Greeting Banner */
+.greeting-banner {
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
+    border-radius: 30px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--hover-shadow);
+    animation: bounceIn 1s ease-out;
+}
+
+.greeting-banner h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.greeting-banner p {
+    font-size: 1.2rem;
+}
+
+/* Stats Section as Cards */
+.stats-section {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 2rem;
+    flex: 1 1 30%;
+    box-shadow: var(--hover-shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.stat-card h4 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card p {
+    font-size: 1.2rem;
+    color: var(--light-text-color);
+}
+
+.connect-btn {
+    background-color: var(--shopify-green);
+    border-color: var(--shopify-green);
+    color: var(--background-color);
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: opacity 0.3s;
+}
+
+.connect-btn:hover {
+    opacity: var(--button-hover-opacity);
+}
+
+/* Your Generated Products Section */
+.table-responsive {
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+.table {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.table-header th {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-weight: 600;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.product-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.product-link:hover {
+    text-decoration: underline;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.75em;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.table td {
+    color: var(--text-color);
+    vertical-align: middle;
+    text-align: center;
+    padding: 0.75rem 1rem;
+}
+
+/* Button Styles */
+.btn-info {
+    background-color: #17A2B8;
+    border-color: #17A2B8;
+    color: #FFFFFF;
+}
+
+.btn-success {
+    background-color: #28A745;
+    border-color: #28A745;
+    color: #FFFFFF;
+}
+
+.btn-danger {
+    background-color: #DC3545;
+    border-color: #DC3545;
+    color: #FFFFFF;
+}
+
+.btn-secondary {
+    background-color: #6C757D;
+    border-color: #6C757D;
+    color: #FFFFFF;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-color);
+}
+
+.btn-primary:hover,
+.btn-info:hover,
+.btn-success:hover,
+.btn-danger:hover,
+.btn-secondary:hover,
+.connect-btn:hover {
+    opacity: var(--button-hover-opacity);
+}
+
+/* Modal Styling */
+.modal-content {
+    background-color: var(--modal-bg-color);
+    color: var(--modal-text-color);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem;
+}
+
+/* Select Store Modal Enhancements */
+#selectStoreModal .modal-content {
+    background-color: #FFFFFF; /* White background for better readability */
+    color: var(--background-color); /* Dark text for contrast */
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#selectStoreModal .modal-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+#selectStoreModal .card {
+    background-color: #FFFFFF; /* White background */
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#selectStoreModal .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#selectStoreModal .form-check-label {
+    color: var(--background-color);
+    font-weight: 500;
+}
+
+#selectStoreModal .form-check-input:checked + .form-check-label {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Loading Modal Styling */
+#loadingModal .modal-content {
+    background-color: var(--modal-bg-color);
+    color: var(--modal-text-color);
+    border: none;
+    border-radius: 15px;
+}
+
+#loadingModal .modal-body {
+    padding: 2rem;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Keyframes for Animations */
+@keyframes bounceIn {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(10px);
+        opacity: 1;
+    }
+    80% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1600px) {
+    .main-content {
+        max-width: 1400px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        padding: 2rem 2rem;
+    }
+    .table-header th {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .main-content {
+        padding: 1.5rem 2rem;
+    }
+    .stat-card {
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar:hover {
+        width: 220px;
+    }
+
+    .main-content {
+        margin-left: 220px;
+        padding: 1.5rem 1rem;
+        max-width: 100%;
+    }
+
+    .stat-card {
+        flex: 1 1 100%;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+
+    .table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 1rem;
+    }
+
+    .table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: 45%;
+        padding-right: 1rem;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: var(--light-text-color);
+    }
+
+    .d-flex.gap-2 .btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .btn-info, .btn-success, .btn-danger, .btn-secondary, .btn-primary {
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
+}
+
+.step-indicator {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Subtitle Styling */
+.subtitle-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--light-text-color);
+}
+
+/* Image Selection Styling */
+.image-checkbox {
+    position: relative;
+    cursor: pointer;
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.image-checkbox img {
+    border-radius: 10px;
+}
+
+.image-checkbox:hover {
+    transform: scale(1.05);
+    box-shadow: var(--hover-shadow);
+}
+
+.image-checkbox input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Disable Next Button */
+#nextButton[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.alert-persistent {
+    /* Optional: Make the alert fixed at the top */
+    position: fixed;
+    top: 80px; /* Adjust as needed */
+    right: 20px;
+    z-index: 1050; /* Ensure it's above other elements */
+    width: auto;
+}
+
+@media (max-width: 768px) {
+    .alert-persistent {
+        width: 90%;
+        left: 5%;
+        right: 5%;
+    }
+}

@@ -1,5 +1,6 @@
 <!-- main_app/templates/_sidebar.html -->
 {% load static %}
+
 <div class="sidebar d-flex flex-column justify-content-between">
     <div>
         <div class="sidebar-header mb-4">
@@ -10,7 +11,7 @@
         </div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' or request.path|slice:":9" == '/product/' %}active{% endif %}"> 
                     <i class="bi bi-speedometer2 me-2"></i> Dashboard
                 </a>
             </li>

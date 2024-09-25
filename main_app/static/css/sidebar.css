@@ -1,5 +1,18 @@
 /* static/css/sidebar.css */
 
+/* Root Variables */
+:root {
+    --primary-color: #6C63FF;       /* Modern purple */
+    --secondary-color: #FF6584;     /* Accent pink */
+    --highlight-color: #FFD700;     /* Highlight for badges */
+    --background-color: #1E1E1E;    /* Dark background */
+    --text-color: #FFFFFF;          /* White text for dark background */
+    --card-bg-color: #2C2C2C;       /* Dark grey cards */
+    --border-color: #444444;        /* Darker border color */
+    --light-text-color: #CCCCCC;    /* Light grey text */
+    --hover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 /* Sidebar Styling */
 .sidebar {
     width: 250px;

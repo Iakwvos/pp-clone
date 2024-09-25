@@ -657,6 +657,8 @@ def dashboard_view(request):
 
 
 
+# views.py
+
 @log_view
 @login_required
 def product_detail_view(request, product_id):
@@ -678,11 +680,151 @@ def product_detail_view(request, product_id):
             logger.warning("Unauthorized access to product ID %s by user_id %s", product_id, user_id)
             return redirect('dashboard')
 
+        # Extract product_data
+        product_data = product.get('product_data', {})
+        if not product_data:
+            messages.error(request, 'Product data is incomplete.')
+            logger.warning("Product ID %s has incomplete product_data for user_id %s", product_id, user_id)
+            return redirect('dashboard')
+
+        # Extract individual components from product_data
+        title = product_data.get('title', product.get('title', 'No Title'))
+        descriptions = product_data.get('descriptions', [])
+        key_benefits = product_data.get('key_benefits', [])
+        reviews = product_data.get('reviews', [])
+        hooks = product_data.get('hooks', [])
+        full_names = product_data.get('full_names', [])
+        images = product.get('images', [])  # Ensure images are directly from the product
+        image_handles = product.get('image_handles', [])
+
+        # Pair each review with the corresponding full name
+        # Ensure that reviews and full_names have the same length
+        combined_reviews = list(zip(reviews, full_names))
+        if len(reviews) != len(full_names):
+            logger.warning("Mismatch in number of reviews and full names for product ID %s", product_id)
+            # Handle mismatched lengths by filling in with default names or reviews
+            min_length = min(len(reviews), len(full_names))
+            combined_reviews = list(zip(reviews[:min_length], full_names[:min_length]))
+            # Optionally, append remaining reviews with a default name
+            if len(reviews) > len(full_names):
+                for review in reviews[min_length:]:
+                    combined_reviews.append((review, "Anonymous"))
+            elif len(full_names) > len(reviews):
+                # Extra names without reviews can be ignored or handled as needed
+                pass
+
+        # Ensure exactly 3 sections, reuse hooks and images if necessary
+        required_sections = 3
+        total_hooks = len(hooks)
+        total_images = len(images)
+        sections = []
+
+        for i in range(required_sections):
+            # Cycle through hooks if not enough
+            hook = hooks[i % total_hooks] if total_hooks > 0 else "Default Hook"
+
+            # Get corresponding description
+            description = descriptions[i] if i < len(descriptions) else "Detailed description here."
+
+            # Cycle through images if not enough
+            image = images[i % total_images] if total_images > 0 else "/placeholder.svg?height=300&width=400"
+
+            sections.append({
+                'hook': hook,
+                'description': description,
+                'image': image,
+                'is_even': i % 2 == 0  # To alternate layout
+            })
+
+        # Prepare context for the template
+        context = {
+            'title': title,
+            'images': images,
+            'image_handles': image_handles,
+            'key_benefits': key_benefits,
+            'combined_reviews': combined_reviews,
+            'sections': sections,
+            'product_id': product_id,
+            'is_imported': product.get('is_imported', False),
+            'created_at': product.get('created_at'),
+        }
+
         logger.debug("Displaying details for product ID %s by user_id %s", product_id, user_id)
-        return render(request, 'product_detail.html', {'product': product})
+        return render(request, 'product_detail.html', context)
     except Exception as e:
         handle_exception(request, e, user_id, "product_detail_view")
         return redirect('dashboard')
+
+
+@log_view
+@login_required
+@require_POST
+def update_product_text_view(request):
+    """
+    Handles AJAX requests to update specific fields in the product_data JSON in Supabase.
+    Expects 'product_id', 'field', 'value', and optionally 'index' in POST data.
+    """
+    user_id = get_user_id(request)
+    product_id = request.POST.get('product_id')
+    field = request.POST.get('field')
+    value = request.POST.get('value')
+    index = request.POST.get('index')  # Optional, for list fields
+
+    if not product_id or not field or value is None:
+        return JsonResponse({'success': False, 'error': 'Invalid data provided.'}, status=400)
+
+    try:
+        # Fetch the product from Supabase
+        product_response = supabase.table('products').select('*').eq('id', product_id).single().execute()
+        product = product_response.data
+
+        if not product:
+            return JsonResponse({'success': False, 'error': 'Product not found.'}, status=404)
+
+
+        # Get current product_data
+        product_data = product.get('product_data', {})
+
+        # Update the specific field
+        if field == 'title':
+            product_data['title'] = value
+        elif field == 'product_label':
+            product_data['product_label'] = value
+        elif field in ['descriptions', 'key_benefits', 'hooks', 'footer_hook', 'footer_description', 'testimonials_title']:
+            if field in ['descriptions', 'key_benefits', 'hooks']:
+                if index is not None:
+                    index = int(index)
+                    if field in product_data and len(product_data[field]) > index:
+                        product_data[field][index] = value
+                    else:
+                        return JsonResponse({'success': False, 'error': 'Index out of range.'}, status=400)
+                else:
+                    # For non-list fields like 'footer_hook' etc.
+                    product_data[field] = value
+            else:
+                # For other single fields
+                product_data[field] = value
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid field.'}, status=400)
+
+        # Prepare the update data
+        update_data = {
+            'product_data': product_data,
+            'updated_at': 'now()'  # Update the timestamp
+        }
+
+        # If the title field was updated, also update the title field in Supabase
+        if field == 'title':
+            update_data['title'] = value
+
+        # Update the product_data in Supabase
+        supabase.table('products').update(update_data).eq('id', product_id).execute()
+
+        return JsonResponse({'success': True})
+    except Exception as e:
+        logger.error("Error updating product text for user_id %s: %s", user_id, e)
+        return JsonResponse({'success': False, 'error': 'An error occurred while updating the product.'}, status=500)
+
 
 
 @log_view

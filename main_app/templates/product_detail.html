@@ -1,25 +1,361 @@
 <!-- main_app/templates/product_detail.html -->
-{% extends 'base.html' %}
+
 {% load static %}
-{% block title %}{{ product.title }} - PagePilot Clone{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}{% endblock %}
 
 {% block content %}
-<div class="row my-5">
-    <div class="col-md-8">
-        <h2>{{ product.title }}</h2>
-        <p>{{ product.description|safe }}</p>
-        <p><strong>Language:</strong> {{ product.language }}</p>
-    </div>
-    <div class="col-md-4">
-        <h4>Images</h4>
-        <div class="row">
-            {% for image in product.images %}
-                <div class="col-6 mb-3">
-                    <img src="{{ image }}" alt="Product Image" class="img-fluid rounded">
-                </div>
-            {% endfor %}
+<div class="page-wrapper">
+    <!-- Sidebar -->
+    {% include '_sidebar.html' %}
+    
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Header Outside Container -->
+        <header class="page-header">
+            <a href="{% url 'dashboard' %}" class="back-link btn btn-secondary">← Back to Dashboard</a>
+            <h1 class="page-title">Review Product</h1>
+            <!-- Placeholder for alignment -->
+            <div></div>
+        </header>
+
+        <!-- Informational Section -->
+        <section class="info-section">
+            <div class="info-container">
+                <p class="info-text">
+                    This is a mockup of a landing page. Here, you can edit the product's texts. Please keep in mind that the design might slightly differ due to Shopify theme's nature.
+                </p>
+            </div>
+        </section>
+
+        <!-- Main Container -->
+        <div class="small-container">
+            <div class="content-area">
+                <section class="product-overview">
+                    <div class="product-images">
+                        {% if images %}
+                            <img src="{{ images.0 }}" alt="{{ title }}" class="main-image" id="mainImage">
+                            <div class="thumbnail-images">
+                                {% for image in images %}
+                                    <img src="{{ image }}" alt="Thumbnail {{ forloop.counter }}" onclick="changeImage('{{ image }}')">
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <img src="{% static 'placeholder.svg' %}?height=400&width=400" alt="{{ title }}" class="main-image" id="mainImage">
+                            <div class="thumbnail-images">
+                                {% for i in "12345" %}
+                                    <img src="{% static 'placeholder.svg' %}?height=80&width=80" alt="Thumbnail {{ forloop.counter }}" onclick="changeImage(this.src)">
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <span class="product-label" data-field="product_label" data-id="{{ product_id }}">{{ product_label|default:"2-PACK" }}</span>
+                        <h2 class="editable" data-field="title" data-id="{{ product_id }}">{{ title }}</h2>
+                        <p class="editable" data-field="description_0" data-id="{{ product_id }}">{{ sections.0.description|default:"Transform any space with enchanting, eco-friendly illumination." }}</p>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">{{ combined_reviews|length }} reviews</span>
+                        </div>
+                        <ul class="features">
+                            {% if key_benefits %}
+                                {% for benefit in key_benefits %}
+                                    <li class="editable" data-field="key_benefits" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ benefit }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li>No electricity needed</li>
+                                <li>Multiple lighting modes</li>
+                                <li>Easy to install</li>
+                                <li>Waterproof design</li>
+                            {% endif %}
+                        </ul>
+                        <button class="add-to-cart">Add To Cart</button>
+                        <div class="additional-info">
+                            <span>Free standard shipping</span>
+                            <span>30-day return policy</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dynamic Sections -->
+                {% for section in sections %}
+                    <section class="section">
+                        {% if forloop.counter0|divisibleby:2 %}
+                            <div class="section-content">
+                                <h2 class="editable" data-field="hooks" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.hook }}</h2>
+                                <p class="editable" data-field="descriptions" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.description }}</p>
+                                <button class="cta-button">Get More Now</button>
+                            </div>
+                            <div class="section-image">
+                                <img src="{{ section.image }}" alt="Section Image">
+                            </div>
+                        {% else %}
+                            <div class="section-image">
+                                <img src="{{ section.image }}" alt="Section Image">
+                            </div>
+                            <div class="section-content">
+                                <h2 class="editable" data-field="hooks" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.hook }}</h2>
+                                <p class="editable" data-field="descriptions" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.description }}</p>
+                                <button class="cta-button">Get More Now</button>
+                            </div>
+                        {% endif %}
+                    </section>
+                {% endfor %}
+
+                <!-- Testimonials Section as Carousel -->
+                <section class="testimonials">
+                    <h2 data-field="testimonials_title" data-id="{{ product_id }}">What People Are Saying</h2>
+                    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% if combined_reviews %}
+                                {% for review, name in combined_reviews %}
+                                    {% if forloop.counter0|divisibleby:3 %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <div class="row justify-content-center">
+                                    {% endif %}
+
+                                    <div class="col-lg-4 col-md-6 mb-4">
+                                        <div class="testimonial">
+                                            {% if review.image_url %}
+                                                <img src="{{ review.image_url }}" alt="{{ name }}">
+                                            {% else %}
+                                                <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="{{ name }}">
+                                            {% endif %}
+                                            <p>"{{ review }}"</p>
+                                            <strong>{{ name }}</strong>
+                                        </div>
+                                    </div>
+
+                                    {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!-- Handle cases where the number of reviews is not divisible by 3 -->
+                                {% if combined_reviews|length|divisibleby:3 == False %}
+                                    <div class="carousel-item">
+                                        <div class="row justify-content-center">
+                                            {% for _ in "123"|slice:":3" %}
+                                                {% if forloop.counter <= combined_reviews|length|divisibleby:3 %}
+                                                    <!-- Empty placeholders if needed -->
+                                                {% else %}
+                                                    <div class="col-lg-4 col-md-6 mb-4">
+                                                        <div class="testimonial placeholder">
+                                                            <!-- Optionally add a default testimonial or leave empty -->
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <!-- Default testimonials as carousel items -->
+                                <div class="carousel-item active">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="testimonial">
+                                                <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Emily R.">
+                                                <p>"These lights are magical! They were super easy to install in my garden and create such a beautiful atmosphere every evening."</p>
+                                                <strong>Emily R.</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="testimonial">
+                                                <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Mark T.">
+                                                <p>"I bought these for my sister's outdoor wedding. They added the perfect touch to the venue. The different lighting modes were a hit!"</p>
+                                                <strong>Mark T.</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="testimonial">
+                                                <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Sarah K.">
+                                                <p>"I was skeptical about solar-powered lights, but these exceeded my expectations. They charge well during the day and last all night."</p>
+                                                <strong>Sarah K.</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Repeat first slide to enable infinite looping -->
+                                <div class="carousel-item">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="testimonial">
+                                                <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Emily R.">
+                                                <p>"These lights are magical! They were super easy to install in my garden and create such a beautiful atmosphere every evening."</p>
+                                                <strong>Emily R.</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="testimonial">
+                                                <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Mark T.">
+                                                <p>"I bought these for my sister's outdoor wedding. They added the perfect touch to the venue. The different lighting modes were a hit!"</p>
+                                                <strong>Mark T.</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 mb-4">
+                                            <div class="testimonial">
+                                                <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Sarah K.">
+                                                <p>"I was skeptical about solar-powered lights, but these exceeded my expectations. They charge well during the day and last all night."</p>
+                                                <strong>Sarah K.</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Previous">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Footer Section -->
+            <section class="footer-section">
+                <h2 data-field="footer_hook" data-id="{{ product_id }}">Try {{ title }} Now with a 30-Day Money-Back Guarantee!</h2>
+                <p data-field="footer_description" data-id="{{ product_id }}">Experience the magic of {{ title }} risk-free! If you're not completely satisfied within 30 days, we'll give you your money back. Light up your life while protecting the planet—buy now with confidence.</p>
+                <button class="cta-button">Get More Now</button>
+            </section>
         </div>
     </div>
+
+    <!-- Bootstrap JS Bundle (Ensure this is included for Carousel functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Include jQuery (necessary for AJAX requests) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        // AJAX Setup to include CSRF token in the header
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": csrftoken }
+        });
+
+        // JavaScript code for inline editing
+        $(document).ready(function() {
+            // Handle click on editable elements
+            $('.editable').on('click', function() {
+                var $this = $(this);
+                if ($this.hasClass('editing')) {
+                    return;
+                }
+                $this.addClass('editing');
+
+                var currentText = $this.text();
+                var field = $this.data('field');
+                var index = $this.data('index'); // For list items
+                var productId = $this.data('id');
+
+                // Create input elements
+                var input = $('<textarea>').val(currentText).addClass('form-control');
+                var saveButton = $('<button>').addClass('btn btn-primary btn-sm save-btn').text('Save');
+                var cancelButton = $('<button>').addClass('btn btn-secondary btn-sm cancel-btn').text('Cancel');
+
+                // Clear current content and append input and buttons
+                $this.empty().append(input, saveButton, cancelButton);
+
+                // Automatically focus on the input field
+                input.focus();
+
+                // Handle Save
+                saveButton.on('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering blur event
+                    saveChanges();
+                });
+
+                // Handle Cancel
+                cancelButton.on('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering blur event
+                    cancelEditing();
+                });
+
+                // Handle focus out (clicking outside the input area)
+                input.on('blur', function() {
+                    // Delay to check if save or cancel button was clicked
+                    setTimeout(function() {
+                        if (!$('.save-btn:hover').length && !$('.cancel-btn:hover').length) {
+                            cancelEditing();
+                        }
+                    }, 100);
+                });
+
+                function saveChanges() {
+                    var newText = input.val().trim();
+
+                    // Prepare data to send
+                    var data = {
+                        'product_id': productId,
+                        'field': field,
+                        'value': newText
+                    };
+
+                    if (index !== undefined && index !== null) {
+                        data['index'] = index;
+                    }
+
+                    // AJAX POST request to update the product data
+                    $.ajax({
+                        url: '{% url "update_product_text" %}',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            if (response.success) {
+                                $this.text(newText);
+                            } else {
+                                alert('Error: ' + response.error);
+                                $this.text(currentText);
+                            }
+                            $this.removeClass('editing');
+                        },
+                        error: function(xhr, status, error) {
+                            alert('An error occurred: ' + error);
+                            $this.text(currentText);
+                            $this.removeClass('editing');
+                        }
+                    });
+                }
+
+                function cancelEditing() {
+                    $this.text(currentText);
+                    $this.removeClass('editing');
+                }
+            });
+        });
+    </script>
 </div>
-<a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
 {% endblock %}
