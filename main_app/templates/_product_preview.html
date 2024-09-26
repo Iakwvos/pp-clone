@@ -1,0 +1,339 @@
+<!-- main_app/templates/product_preview.html -->
+{% load static %}
+<!-- Unique Wrapper -->
+<div class="product-preview-container">
+    <div class="small-container">
+        <div class="content-area">
+            <!-- Dynamic Product Content -->
+
+            <section class="pp-product-overview">
+                <div class="pp-product-images">
+                    {% if images %}
+                        <img src="{{ images.0 }}" alt="{{ title }}" class="pp-main-image" id="mainImage">
+                        <div class="pp-thumbnail-images">
+                            {% for image in images %}
+                                <img src="{{ image }}" alt="Thumbnail {{ forloop.counter }}" onclick="changeImage('{{ image }}')">
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <img src="{% static 'placeholder.svg' %}?height=400&width=400" alt="{{ title }}" class="pp-main-image" id="mainImage">
+                        <div class="pp-thumbnail-images">
+                            {% for i in "12345" %}
+                                <img src="{% static 'placeholder.svg' %}?height=80&width=80" alt="Thumbnail {{ forloop.counter }}" onclick="changeImage(this.src)">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pp-product-info">
+                    <span class="pp-product-label" data-field="product_label" data-id="{{ product_id }}">{{ product_label|default:"2-PACK" }}</span>
+                    <h2 class="pp-editable editable" data-field="title" data-id="{{ product_id }}">{{ title }}</h2>
+                    <p class="pp-editable editable" data-field="description_0" data-id="{{ product_id }}">{{ sections.0.description|default:"Transform any space with enchanting, eco-friendly illumination." }}</p>
+                    <div class="pp-rating">
+                        <span class="pp-stars">★★★★★</span>
+                        <span class="pp-review-count">{{ combined_reviews|length }} reviews</span>
+                    </div>
+                    <ul class="pp-features">
+                        {% if key_benefits %}
+                            {% for benefit in key_benefits %}
+                                <li class="pp-editable editable" data-field="key_benefits" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ benefit }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li>No electricity needed</li>
+                            <li>Multiple lighting modes</li>
+                            <li>Easy to install</li>
+                            <li>Waterproof design</li>
+                        {% endif %}
+                    </ul>
+                    <button class="pp-add-to-cart add-to-cart">Add To Cart</button>
+                    <div class="pp-additional-info additional-info">
+                        <span>Free standard shipping</span>
+                        <span>30-day return policy</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dynamic Sections -->
+            {% for section in sections %}
+                <section class="pp-section">
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <div class="pp-section-content">
+                            <h2 class="pp-editable editable" data-field="hooks" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.hook }}</h2>
+                            <p class="pp-editable editable" data-field="descriptions" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.description }}</p>
+                            <button class="pp-cta-button cta-button">Get More Now</button>
+                        </div>
+                        <div class="pp-section-image">
+                            <img src="{{ section.image }}" alt="Section Image">
+                        </div>
+                    {% else %}
+                        <div class="pp-section-image">
+                            <img src="{{ section.image }}" alt="Section Image">
+                        </div>
+                        <div class="pp-section-content">
+                            <h2 class="pp-editable editable" data-field="hooks" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.hook }}</h2>
+                            <p class="pp-editable editable" data-field="descriptions" data-index="{{ forloop.counter0 }}" data-id="{{ product_id }}">{{ section.description }}</p>
+                            <button class="pp-cta-button cta-button">Get More Now</button>
+                        </div>
+                    {% endif %}
+                </section>
+            {% endfor %}
+
+            <!-- Testimonials Section as Carousel -->
+            <section class="pp-testimonials testimonials">
+                <h2 class="pp-editable editable" data-field="testimonials_title" data-id="{{ product_id }}">What People Are Saying</h2>
+                <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% if combined_reviews %}
+                            {% for review, name in combined_reviews %}
+                                {% if forloop.counter0|divisibleby:3 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <div class="row justify-content-center">
+                                {% endif %}
+
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="pp-testimonial testimonial">
+                                        {% if review.image_url %}
+                                            <img src="{{ review.image_url }}" alt="{{ name }}">
+                                        {% else %}
+                                            <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="{{ name }}">
+                                        {% endif %}
+                                        <p>"{{ review }}"</p>
+                                        <strong>{{ name }}</strong>
+                                    </div>
+                                </div>
+
+                                {% if forloop.counter|divisibleby:3 or forloop.last %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- Handle cases where the number of reviews is not divisible by 3 -->
+                            {% if combined_reviews|length|divisibleby:3 == False %}
+                                <div class="carousel-item">
+                                    <div class="row justify-content-center">
+                                        {% for _ in "123"|slice:":3" %}
+                                            {% if forloop.counter <= combined_reviews|length|divisibleby:3 %}
+                                                <!-- Empty placeholders if needed -->
+                                            {% else %}
+                                                <div class="col-lg-4 col-md-6 mb-4">
+                                                    <div class="pp-testimonial testimonial placeholder">
+                                                        <!-- Optionally add a default testimonial or leave empty -->
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <!-- Default testimonials as carousel items -->
+                            <div class="carousel-item active">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-4 col-md-6 mb-4">
+                                        <div class="pp-testimonial testimonial">
+                                            <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Emily R.">
+                                            <p>"These lights are magical! They were super easy to install in my garden and create such a beautiful atmosphere every evening."</p>
+                                            <strong>Emily R.</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-4">
+                                        <div class="pp-testimonial testimonial">
+                                            <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Mark T.">
+                                            <p>"I bought these for my sister's outdoor wedding. They added the perfect touch to the venue. The different lighting modes were a hit!"</p>
+                                            <strong>Mark T.</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-4">
+                                        <div class="pp-testimonial testimonial">
+                                            <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Sarah K.">
+                                            <p>"I was skeptical about solar-powered lights, but these exceeded my expectations. They charge well during the day and last all night."</p>
+                                            <strong>Sarah K.</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Repeat first slide to enable infinite looping -->
+                            <div class="carousel-item">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-4 col-md-6 mb-4">
+                                        <div class="pp-testimonial testimonial">
+                                            <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Emily R.">
+                                            <p>"These lights are magical! They were super easy to install in my garden and create such a beautiful atmosphere every evening."</p>
+                                            <strong>Emily R.</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-4">
+                                        <div class="pp-testimonial testimonial">
+                                            <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Mark T.">
+                                            <p>"I bought these for my sister's outdoor wedding. They added the perfect touch to the venue. The different lighting modes were a hit!"</p>
+                                            <strong>Mark T.</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-4">
+                                        <div class="pp-testimonial testimonial">
+                                            <img src="{% static 'placeholder.svg' %}?height=60&width=60" alt="Sarah K.">
+                                            <p>"I was skeptical about solar-powered lights, but these exceeded my expectations. They charge well during the day and last all night."</p>
+                                            <strong>Sarah K.</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Previous">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Footer Section -->
+            <section class="pp-footer-section footer-section">
+                <h2 class="pp-editable editable" data-field="footer_hook" data-id="{{ product_id }}">Try {{ title }} Now with a 30-Day Money-Back Guarantee!</h2>
+                <p class="pp-editable editable" data-field="footer_description" data-id="{{ product_id }}">Experience the magic of {{ title }} risk-free! If you're not completely satisfied within 30 days, we'll give you your money back. Light up your life while protecting the planet—buy now with confidence.</p>
+                <button class="pp-cta-button cta-button">Get More Now</button>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- Include the CSS specific to product_preview.html -->
+<link rel="stylesheet" href="{% static 'css/product_preview.css' %}">
+
+<!-- Include necessary JavaScript code -->
+<script>
+    // Function to change the main image when a thumbnail is clicked
+    function changeImage(src) {
+        document.getElementById('mainImage').src = src;
+    }
+
+    // Inline editing functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle click on editable elements
+        const editableElements = document.querySelectorAll('.product-preview-container .editable');
+
+        editableElements.forEach(function(element) {
+            element.addEventListener('click', function() {
+                if (element.classList.contains('editing')) {
+                    return;
+                }
+                element.classList.add('editing');
+
+                const currentText = element.textContent.trim();
+                const field = element.getAttribute('data-field');
+                const index = element.getAttribute('data-index');
+                const productId = element.getAttribute('data-id');
+
+                // Create textarea element
+                const textarea = document.createElement('textarea');
+                textarea.classList.add('form-control');
+                textarea.value = currentText;
+
+                // Create Save and Cancel buttons
+                const saveButton = document.createElement('button');
+                saveButton.classList.add('btn', 'btn-primary', 'btn-sm', 'save-btn');
+                saveButton.textContent = 'Save';
+
+                const cancelButton = document.createElement('button');
+                cancelButton.classList.add('btn', 'btn-secondary', 'btn-sm', 'cancel-btn');
+                cancelButton.textContent = 'Cancel';
+
+                // Clear current content and append textarea and buttons
+                element.innerHTML = '';
+                element.appendChild(textarea);
+                element.appendChild(saveButton);
+                element.appendChild(cancelButton);
+
+                // Focus on the textarea
+                textarea.focus();
+
+                // Handle Save
+                saveButton.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering other events
+                    saveChanges();
+                });
+
+                // Handle Cancel
+                cancelButton.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering other events
+                    cancelEditing();
+                });
+
+                // Handle clicking outside the textarea to cancel
+                textarea.addEventListener('blur', function() {
+                    setTimeout(function() { // Timeout to allow button clicks
+                        if (!saveButton.matches(':hover') && !cancelButton.matches(':hover')) {
+                            cancelEditing();
+                        }
+                    }, 100);
+                });
+
+                function saveChanges() {
+                    const newText = textarea.value.trim();
+
+                    // Prepare data to send
+                    const data = new FormData();
+                    data.append('product_id', productId);
+                    data.append('field', field);
+                    data.append('value', newText);
+                    if (index !== null && index !== undefined) {
+                        data.append('index', index);
+                    }
+
+                    // Fetch CSRF token
+                    const csrftoken = getCookie('csrftoken');
+
+                    // AJAX POST request to update the product data
+                    fetch("{% url 'update_product_text' %}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrftoken,
+                        },
+                        body: data
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            element.textContent = newText;
+                        } else {
+                            alert('Error: ' + data.error);
+                            element.textContent = currentText;
+                        }
+                        element.classList.remove('editing');
+                    })
+                    .catch((error) => {
+                        alert('An error occurred: ' + error);
+                        element.textContent = currentText;
+                        element.classList.remove('editing');
+                    });
+                }
+
+                function cancelEditing() {
+                    element.textContent = currentText;
+                    element.classList.remove('editing');
+                }
+
+                // Function to get CSRF token from cookies
+                function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+            });
+        });
+    });
+</script>

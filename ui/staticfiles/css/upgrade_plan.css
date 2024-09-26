@@ -1,0 +1,230 @@
+/* static/css/upgrade_plan.css */
+
+/* Root Variables */
+:root {
+    --primary-color: #6C63FF;       /* Modern purple */
+    --secondary-color: #FF6584;     /* Accent pink */
+    --highlight-color: #FFD700;     /* Highlight for badges */
+    --background-color: #1E1E1E;    /* Dark background */
+    --text-color: #FFFFFF;          /* White text for dark background */
+    --card-bg-color: #2C2C2C;       /* Dark grey cards */
+    --border-color: #444444;        /* Darker border color */
+    --light-text-color: #CCCCCC;    /* Light grey text */
+    --hover-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Body Styles */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    padding-top: 0; /* Removed padding as header is excluded */
+}
+
+/* Upgrade Container */
+.upgrade-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Heading */
+.upgrade-container h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    text-align: center;
+    animation: fadeInDown 1s ease forwards;
+}
+
+/* Plans Wrapper */
+.plans-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+/* Plan Card Styles */
+.plan-card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Expanded Plan Card */
+.plan-card.expanded {
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Plan Header */
+.plan-header h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.plan-header .price {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.plan-header .price span {
+    font-size: 1rem;
+    color: var(--light-text-color);
+}
+
+/* Plan Features */
+.plan-features {
+    position: relative;
+    text-align: left;
+}
+
+/* Visible Features */
+.visible-features,
+.hidden-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.visible-features li,
+.hidden-features li {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    color: var(--light-text-color);
+}
+
+.visible-features li i,
+.hidden-features li i {
+    color: var(--secondary-color);
+    margin-right: 0.5rem;
+}
+
+/* Hidden Features with Smooth Expansion and Collapse */
+.hidden-features {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+}
+
+.plan-card.expanded .hidden-features {
+    max-height: 500px; /* Adjust based on content */
+    opacity: 1;
+}
+
+/* Expand Indicator */
+.expand-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    color: var(--light-text-color);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.expand-indicator i.rotate {
+    transform: rotate(180deg);
+}
+
+/* Badges */
+.badge {
+    position: absolute;
+    top: 15px;
+    right: -40px; /* Adjusted to prevent cropping */
+    background-color: var(--highlight-color);
+    color: var(--background-color);
+    padding: 0.5rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    white-space: nowrap; /* Prevent text wrapping */
+    z-index: 1;
+}
+
+.current-plan-badge {
+    background-color: var(--secondary-color);
+}
+
+.popular-plan-badge {
+    background-color: var(--highlight-color);
+}
+
+/* Select Plan Button */
+.btn-select-plan {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn-select-plan:hover {
+    background-color: #5b52e6;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .plans-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .plan-card {
+        max-width: 100%;
+    }
+
+    .expand-indicator {
+        top: 5px;
+        right: 5px;
+    }
+}

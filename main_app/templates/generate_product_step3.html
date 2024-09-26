@@ -26,9 +26,6 @@
             {% for handle in image_handles %}
                 <input type="hidden" name="image_handles" value="{{ handle }}">
             {% endfor %}
-            {% for full_name in full_names %}
-                <input type="hidden" name="full_names" value="{{ full_name }}">
-            {% endfor %}
 
             <!-- Images Preview Section -->
             <div class="card mb-4">
@@ -50,27 +47,32 @@
                     <h5>Product Information</h5>
                 </div>
                 <div class="card-body product-info">
-                    <div class="form-section">
-                        <!-- Product Title -->
-                        <div class="form-group">
-                            <label for="title" class="form-label">Product Title</label>
-                            <input type="text" id="title" name="title" class="form-control" value="{{ title }}" required>
-                        </div>
+                    <!-- Collapsible Sections -->
 
-                        <!-- Full Names -->
-                        <div class="form-group">
-                            <label class="form-label">Full Names</label>
-                            {% for full_name in full_names %}
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text">{{ forloop.counter }}.</span>
-                                    <input type="text" name="full_names[]" class="form-control" value="{{ full_name }}" required>
-                                </div>
-                            {% endfor %}
+                    <!-- 1. Product Title -->
+                    <div class="collapsible-section">
+                        <div class="section-header">
+                            <h6>Product Title
+                                <span class="info-icon" data-tooltip="Choose a catchy and descriptive product title that will attract customers and clearly convey what the product is about. Make sure it includes relevant keywords for better SEO performance.">i</span>
+                            </h6>
+                            <span class="toggle-icon">+</span>
                         </div>
+                        <div class="section-content active">
+                            <div class="form-group">
+                                <input type="text" id="title" name="title" class="form-control" value="{{ title }}" required>
+                            </div>
+                        </div>
+                    </div>
 
-                        <!-- Key Benefits -->
-                        <div class="form-group">
-                            <label class="form-label">Key Benefits</label>
+                    <!-- 2. Key Benefits -->
+                    <div class="collapsible-section">
+                        <div class="section-header">
+                            <h6>Key Benefits
+                                <span class="info-icon" data-tooltip="Highlight the main benefits that will appeal to your customers. Focus on how the product solves problems or improves their lives. Use clear and concise language to make each benefit stand out.">i</span>
+                            </h6>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="section-content">
                             {% for benefit in key_benefits %}
                                 <div class="input-group mb-2">
                                     <span class="input-group-text">{{ forloop.counter }}.</span>
@@ -78,40 +80,69 @@
                                 </div>
                             {% endfor %}
                         </div>
+                    </div>
 
-                        <!-- Descriptions -->
-                        <div class="form-group">
-                            <label class="form-label">Descriptions</label>
-                            {% for description in descriptions %}
-                                <div class="mb-2">
-                                    <textarea name="descriptions[]" class="form-control" rows="3" required>{{ description }}</textarea>
-                                </div>
-                            {% endfor %}
+                    <!-- 3. Marketing Hooks -->
+                    <div class="collapsible-section">
+                        <div class="section-header">
+                            <h6>Marketing Hooks
+                                <span class="info-icon" data-tooltip="Craft compelling hooks to grab attention and encourage engagement. These should be short, impactful statements that highlight the unique selling points of your product. Think about what makes your product stand out from the competition.">i</span>
+                            </h6>
+                            <span class="toggle-icon">+</span>
                         </div>
-
-                        <!-- Full Names -->
-                        <div class="form-group">
-                            <label class="form-label">Full Names</label>
-                            {% for full_name in full_names %}
-                                <div class="mb-2">
-                                    <textarea name="full_names[]" class="form-control" rows="3" required>{{ full_name }}</textarea>
-                                </div>
-                            {% endfor %}
-                        </div>
-
-                        <!-- Marketing Hooks -->
-                        <div class="form-group">
-                            <label class="form-label">Marketing Hooks</label>
+                        <div class="section-content">
                             {% for hook in hooks %}
                                 <div class="mb-2">
                                     <textarea name="hooks[]" class="form-control" rows="2" required>{{ hook }}</textarea>
                                 </div>
                             {% endfor %}
                         </div>
+                    </div>
 
-                        <!-- Customer Reviews -->
-                        <div class="form-group">
-                            <label class="form-label">Customer Reviews</label>
+                    <!-- 4. Descriptions -->
+                    <div class="collapsible-section">
+                        <div class="section-header">
+                            <h6>Descriptions
+                                <span class="info-icon" data-tooltip="Provide detailed descriptions to inform and persuade potential customers. Ensure that each description clearly explains the features, benefits, and usage of the product. Use engaging language that resonates with your target audience.">i</span>
+                            </h6>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="section-content">
+                            {% for description in descriptions %}
+                                <div class="mb-2">
+                                    <textarea name="descriptions[]" class="form-control" rows="3" required>{{ description }}</textarea>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- 5. Full Names -->
+                    <div class="collapsible-section">
+                        <div class="section-header">
+                            <h6>Full Names
+                                <span class="info-icon" data-tooltip="Enter the full names of customers who have left reviews. This adds authenticity and trustworthiness to the reviews displayed on your product page. Ensure that the names are realistic and diverse to appeal to a broader audience.">i</span>
+                            </h6>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="section-content">
+                            {% for full_name in full_names %}
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text">{{ forloop.counter }}.</span>
+                                    <input type="text" name="full_names[]" class="form-control" value="{{ full_name }}" required>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- 6. Customer Reviews -->
+                    <div class="collapsible-section">
+                        <div class="section-header">
+                            <h6>Customer Reviews
+                                <span class="info-icon" data-tooltip="Include genuine customer testimonials to build trust and credibility. Each review should highlight specific aspects of the product that satisfied customers appreciated. Use a mix of positive feedback to showcase different strengths of your product.">i</span>
+                            </h6>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="section-content">
                             {% for review in reviews %}
                                 <div class="mb-2">
                                     <textarea name="reviews[]" class="form-control" rows="3" required>{{ review }}</textarea>
@@ -120,6 +151,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Informational Message -->
+            <div class="info-message">
+                <p>Once you save the product, a simulated landing page will be created in your dashboard. You can preview how it will look before importing it to Shopify and make any last-minute text edits.</p>
             </div>
 
             <!-- Action Buttons -->
@@ -132,64 +168,42 @@
 
     <!-- JavaScript -->
     <script>
-        // Function to generate the product_data JSON from form inputs
-        function generateProductData() {
-            const title = document.getElementById('title').value.trim();
-    
-            // Gather Descriptions
-            const descriptions = [];
-            document.querySelectorAll('textarea[name="descriptions[]"]').forEach(textarea => {
-                descriptions.push(textarea.value.trim());
-            });
-
-            // Gather Descriptions
-            const full_names = [];
-            document.querySelectorAll('textarea[name="full_names[]"]').forEach(textarea => {
-                full_names.push(textarea.value.trim());
-            });
-    
-            // Gather Key Benefits
-            const keyBenefits = [];
-            document.querySelectorAll('input[name="key_benefits[]"]').forEach(input => {
-                keyBenefits.push(input.value.trim());
-            });
-    
-            // Gather Hooks
-            const hooks = [];
-            document.querySelectorAll('textarea[name="hooks[]"]').forEach(textarea => {
-                hooks.push(textarea.value.trim());
-            });
-    
-            // Gather Reviews
-            const reviews = [];
-            document.querySelectorAll('textarea[name="reviews[]"]').forEach(textarea => {
-                reviews.push(textarea.value.trim());
-            });
-    
-            const productData = {
-                title: title,
-                full_names: full_names,
-                descriptions: descriptions,
-                key_benefits: keyBenefits,
-                hooks: hooks,
-                reviews: reviews
-            };
-    
-            return productData;
-        }
-
-    
-        // Initialize preview on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updatePreview();
-    
-            // Add event listeners to all input and textarea fields
-            document.querySelectorAll('input, textarea').forEach(element => {
-                element.addEventListener('input', updatePreview);
+        // Collapsible Sections
+        document.querySelectorAll('.collapsible-section .section-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.classList.toggle('active');
+                const toggleIcon = this.querySelector('.toggle-icon');
+                if (content.classList.contains('active')) {
+                    toggleIcon.textContent = '-';
+                } else {
+                    toggleIcon.textContent = '+';
+                }
             });
         });
-    
-        // Handle form submission to include product_data as JSON
+
+        // Tooltip Functionality
+        document.querySelectorAll('.info-icon').forEach(icon => {
+            icon.addEventListener('mouseover', function() {
+                const tooltipText = this.getAttribute('data-tooltip');
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.textContent = tooltipText;
+                document.body.appendChild(tooltip);
+                const rect = this.getBoundingClientRect();
+                tooltip.style.left = rect.left + window.scrollX + 'px';
+                tooltip.style.top = rect.top + window.scrollY - tooltip.offsetHeight - 10 + 'px';
+                this._tooltip = tooltip;
+            });
+            icon.addEventListener('mouseout', function() {
+                if (this._tooltip) {
+                    document.body.removeChild(this._tooltip);
+                    this._tooltip = null;
+                }
+            });
+        });
+
+        // Handle form submission
         document.querySelector('form').addEventListener('submit', function(e) {
             // Generate product_data and set it to a hidden input
             const productData = generateProductData();
@@ -202,6 +216,53 @@
             }
             productDataInput.value = JSON.stringify(productData);
         });
+
+        // Function to generate the product_data JSON from form inputs
+        function generateProductData() {
+            const title = document.getElementById('title').value.trim();
+
+            // Gather Descriptions
+            const descriptions = [];
+            document.querySelectorAll('textarea[name="descriptions[]"]').forEach(textarea => {
+                descriptions.push(textarea.value.trim());
+            });
+
+            // Gather Key Benefits
+            const keyBenefits = [];
+            document.querySelectorAll('input[name="key_benefits[]"]').forEach(input => {
+                keyBenefits.push(input.value.trim());
+            });
+
+            // Gather Full Names
+            const fullNames = [];
+            document.querySelectorAll('input[name="full_names[]"]').forEach(input => {
+                fullNames.push(input.value.trim());
+            });
+
+            // Gather Hooks
+            const hooks = [];
+            document.querySelectorAll('textarea[name="hooks[]"]').forEach(textarea => {
+                hooks.push(textarea.value.trim());
+            });
+
+            // Gather Reviews
+            const reviews = [];
+            document.querySelectorAll('textarea[name="reviews[]"]').forEach(textarea => {
+                reviews.push(textarea.value.trim());
+            });
+
+            const productData = {
+                title: title,
+                full_names: fullNames,
+                descriptions: descriptions,
+                key_benefits: keyBenefits,
+                hooks: hooks,
+                reviews: reviews
+            };
+
+            return productData;
+        }
     </script>
 </body>
 </html>
+    

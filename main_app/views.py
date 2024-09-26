@@ -965,7 +965,7 @@ def generate_product_view(request):
         category = request.POST.get('category')
         description = request.POST.get('description')
 
-        if not product_url or not language or not category or not description:
+        if not product_url or not language:
             messages.error(request, 'All fields are required to generate a product.')
             logger.warning("Missing fields in product generation by user_id %s", user_id)
             return redirect('dashboard')
@@ -983,8 +983,8 @@ def generate_product_view(request):
         request.session['product_generation'] = {
             'product_url': product_url,
             'language': language,
-            'category': category,
-            'description': description,
+            #'category': category,
+            #'description': description,
         }
         logger.debug("Stored product_generation session data for user_id %s", user_id)
 
@@ -992,8 +992,8 @@ def generate_product_view(request):
         return render(request, 'generate_product_step2.html', {
             'title': 'Fetching Images...',  # Placeholder, will be updated via AJAX
             'language': language,
-            'category': category,
-            'description': description,
+            #'category': category,
+            #'description': description,
         })
 
     # If GET request, redirect to dashboard

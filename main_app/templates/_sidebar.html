@@ -1,5 +1,8 @@
 <!-- main_app/templates/_sidebar.html -->
 {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+{% endblock %}
 
 <div class="sidebar d-flex flex-column justify-content-between">
     <div>
